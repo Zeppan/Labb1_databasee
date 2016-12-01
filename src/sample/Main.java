@@ -31,7 +31,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    //hej
+
 
     public static void main(String[] args) {
         launch(args);
