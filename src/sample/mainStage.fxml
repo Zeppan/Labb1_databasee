@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="689.0" prefWidth="1296.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1296.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Log out" />
+               </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Search">
+               <items>
+                  <Menu mnemonicParsing="false" text="CD">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Genre" />
+                      <MenuItem mnemonicParsing="false" text="Artist" />
+                        <MenuItem mnemonicParsing="false" text="CD-Name" />
+                        <MenuItem mnemonicParsing="false" text="Ratings" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Movie">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Ratings" />
+                      <MenuItem mnemonicParsing="false" text="Director" />
+                        <MenuItem mnemonicParsing="false" text="Genre" />
+                    </items>
+                  </Menu>
+               </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Add">
+            <items>
+              <MenuItem mnemonicParsing="false" text="New CD" />
+                  <MenuItem mnemonicParsing="false" text="New Movie" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem mnemonicParsing="false" text="About" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
