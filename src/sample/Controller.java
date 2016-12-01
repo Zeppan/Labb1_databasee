@@ -23,7 +23,7 @@ public class Controller implements Runnable{
     private static String password;
 
     private Model model;
-
+    //halloj
     public Controller(){
         model = new Model();
     }
