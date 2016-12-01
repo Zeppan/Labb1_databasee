@@ -21,25 +21,26 @@ public class Controller implements Runnable{
 
     private static String username;
     private static String password;
+    private static String dbName;
 
     private Model model;
-    //halloj
+
     public Controller(){
         model = new Model();
     }
 
     @FXML
-    TextField txt_usr_name, txt_pass;
+    TextField txt_usr_name, txt_pass, databasename;
     @FXML
     public void login(ActionEvent e) throws Exception {
         this.username = txt_usr_name.getText();
         this.password = txt_pass.getText();
+        this.dbName = databasename.getText();
         connectToDatabase(e);
     }
 
     public void connectToDatabase(ActionEvent e) throws Exception{
-        String database = "shit";
-        String server = "jdbc:mysql://localhost:3306/" + database + "?UseClientEnc=UTF8";
+        String server = "jdbc:mysql://localhost:3306/" + dbName + "?UseClientEnc=UTF8";
         Connection con = null;
         try{
             Class.forName("com.mysql.jdbc.Driver");

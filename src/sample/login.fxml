@@ -15,6 +15,7 @@
          <children>
             <TextField fx:id="txt_usr_name" promptText="Username" />
             <PasswordField fx:id="txt_pass" promptText="Password" />
+            <TextField fx:id="databasename" promptText="Database Name" />
             <HBox spacing="15.0">
                <children>
                   <Button fx:id="btn_reg" mnemonicParsing="false" text="Register" />
@@ -23,7 +24,7 @@
             </HBox>
          </children>
       </VBox>
-      <Label layoutX="215.0" layoutY="109.0" prefHeight="40.0" prefWidth="172.0" text="Login">
+      <Label layoutX="215.0" layoutY="107.0" prefHeight="40.0" prefWidth="172.0" text="Login">
          <font>
             <Font size="30.0" />
          </font>
