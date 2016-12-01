@@ -5,7 +5,7 @@ import java.sql.Connection;
 /**
  * Created by Glantz on 2016-12-01.
  */
-public interface SQLquery {
+public abstract interface SQLquery {
 
     void updateItem(Connection con, String query);
     void insertItem(Connection con, String query);
