@@ -11,8 +11,5 @@ public interface SQLquery {
     void insertItem(Connection con, String query);
     void deleteItem(Connection con, String query);
     void selectItem(Connection con, String query);
-    void searchOnGenre(Connection con, String query);
-    void searchOnTitle(Connection con, String query);
-    
 
 }
