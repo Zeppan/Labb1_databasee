@@ -1,6 +1,8 @@
 package sample;
 import java.sql.*;
 import Model.*;
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+
 /**
  * Created by Glantz on 2016-12-06.
  */
@@ -103,11 +105,6 @@ public class SQL_Query {
 
             // Get the attribute values
             while (rs.next()) {
-                // NB! This is an example, -not- the preferred way to retrieve data.
-                // You should use methods that return a specific data type, like
-                // rs.getInt(), rs.getString() or such.
-                // It's also advisable to store each tuple (row) in an object of
-                // custom type (e.g. Employee).
                 for (int c = 1; c <= ccount; c++) {
                     System.out.print(rs.getObject(c) + "\t");
                 }
@@ -136,6 +133,32 @@ public class SQL_Query {
                 tmp.SetaddedBy(rs.getString("addedBy"));
                 model.content.add(tmp);
             }
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        }
+    }
+    public void getcontentReviews(Connection con, Model model, String title) throws SQLException{
+
+
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = con.prepareStatement("SELECT title,releaseDate,review  FROM content,review WHERE content.contentID=review.contentID AND  ?");
+
+            ResultSet rs = pstmt.executeQuery("SELECT title,releaseDate,review  FROM content,review WHERE content.contentID=review.contentID AND  ?");
+            pstmt.setString(1,title);
+            content tmp = new content();
+            tmp.SetTitle(rs.getString("title"));
+            tmp.SetReleaseDate(rs.getString("releaseDate"));
+            tmp.addReview(rs.getString("date"),rs.getString("review"));
+            while (rs.next()) {
+                tmp.addReview(rs.getString("date"),rs.getString("review"));
+            }
+            model.content.add(tmp);
+            System.out.println(model.getContent().get(0).getTitle());
+            System.out.println(model.getContent().get(0).getReleaseDate());
+            System.out.println(model.getContent().get(0).getReviews());
         } finally {
             if (pstmt != null) {
                 pstmt.close();

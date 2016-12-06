@@ -39,10 +39,10 @@ public class content {
     public String getAddedBy(){return addedBy;}
     public int getContentID(){return contentID;}
     public int getRating(){return rating;}
+    public ArrayList<review> getReviews(){return reviews;}
 
 
     public void SetTitle(String Title){this.title=Title;}
-
     public void SetReleaseDate(String releaseDate){this.releaseDate=releaseDate;}
 
     public void SetType(String type){this.type=type; }
