@@ -21,4 +21,8 @@ public class review {
         return review;
     }
 
+    public void setDate(String date){this.date=date;}
+
+    public void setReview(String review){this.review=review;}
+
 }

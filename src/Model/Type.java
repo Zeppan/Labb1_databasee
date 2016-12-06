@@ -5,4 +5,5 @@ package Model;
  */
 public enum Type {
     CD, MOVIE
+
 }

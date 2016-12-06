@@ -7,10 +7,10 @@ public class Creator {
 
     private String creatorName;
     private String nationality;
-    private String creatorID;
+    private int creatorID;
     private creatorRole role;
 
-    public Creator(String creatorID, String creatorName, String nationality, creatorRole role){
+    public Creator(int creatorID, String creatorName, String nationality, creatorRole role){
         this.creatorName = creatorName;
         this.nationality = nationality;
         this.role = role;
@@ -25,11 +25,20 @@ public class Creator {
         return nationality;
     }
 
-    public String getCreatorID(){
+    public int getCreatorID(){
         return creatorID;
     }
 
     public creatorRole getRole(){
         return role;
     }
+
+    public void setCreatorName(String creatorName){this.creatorName=creatorName;}
+
+    public void setNationality(String nationality){this.nationality=nationality;}
+
+    public void setCreatorID(int creatorID){this.creatorID=creatorID;}
+
+    public void setRole(creatorRole role){this.role=role;}
+
 }

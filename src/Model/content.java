@@ -18,6 +18,8 @@ public class content {
         this.type = type;
         this.genre = genre;
     }
+    public content (){
+    }
 
     public String getTitle(){
         return title;
@@ -35,4 +37,11 @@ public class content {
         return genre;
     }
 
+    public void SetTitle(String Title){this.title=Title;}
+
+    public void SetReleaseDate(String releaseDate){this.releaseDate=releaseDate;}
+
+    public void SetType(String type){this.type=type;}
+
+    public void Setgenre(String genre){this.genre=genre;}
 }

@@ -33,4 +33,13 @@ public class user {
         return privilage;
     }
 
+    public void setUsername(String username){this.username=username;}
+
+    public void setPassword(String password){this.username=password;}
+
+    public void setName(String name){this.name=name;}
+
+    public void setPrivilage(int privilage){this.privilage=privilage;}
+
+
 }
