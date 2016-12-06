@@ -8,17 +8,14 @@ import sample.SQL_Query;
 
 public class Controller implements Runnable{
 
-    private Model model;
 
-    public Controller(){
-        model = new Model();
-    }
+
 
     public static void connectToDatabase(ActionEvent e, String username, String password, String dbName) throws Exception{
         String server = "jdbc:mysql://localhost:3306/" + dbName + "?UseClientEnc=UTF8";
         Connection con = null;
         SQL_Query sql = new SQL_Query();
-
+       Model model = new Model();;
         try{
             Class.forName("com.mysql.jdbc.Driver");
 
@@ -33,7 +30,7 @@ public class Controller implements Runnable{
            // insertIntoCreator(con,"Mattias Kågström","SWE","Actor","hglantz@kth.se");
            // sql.insertIntoCreatedContent(con,6,1);
           //  sql.SelectQuery(con,"SELECT * FROM content");
-           // sql.getsomething(con,"SELECT * FROM content");
+            //sql.getsomething(con, model,"SELECT * FROM content");
 
              //sql.SelectQuery(con,"SELECT * FROM content");
            // insertIntoContent(con);
