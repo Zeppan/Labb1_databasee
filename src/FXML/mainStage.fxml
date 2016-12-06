@@ -5,7 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="689.0" prefWidth="1296.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.mainStageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="689.0" prefWidth="1296.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.mainStageController">
    <children>
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1296.0">
         <menus>
@@ -35,8 +35,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Add">
             <items>
-              <MenuItem mnemonicParsing="false" text="New CD" />
-                  <MenuItem mnemonicParsing="false" text="New Movie" />
+              <MenuItem mnemonicParsing="false" onAction="#addMedia" text="New CD" />
+                  <MenuItem mnemonicParsing="false" onAction="#addMedia" text="New Movie" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Help">
