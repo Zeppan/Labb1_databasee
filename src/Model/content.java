@@ -5,16 +5,17 @@ import java.util.ArrayList;
  * Created by nicla on 2016-11-30.
  */
 public class content {
-
+    private int contentID;
+    private int rating;
     private String title;
     private String releaseDate;
     private String type;
-    private int rating;
+    private String addedBy;
     private ArrayList<Creator> creators;;
     private ArrayList<genre> genres;
     private ArrayList<review> reviews;
 
-    public content(String title, String releaseDate, String type,int rating){
+    public content(int contentID, String title, String releaseDate, String type ,int rating){
         creators = new ArrayList<>();
         genres = new ArrayList<>();
         reviews = new ArrayList<>();
@@ -45,11 +46,14 @@ public class content {
 
     public void SetType(String type){this.type=type; }
 
+    public void SetaddedBy(String addedBy){this.addedBy=addedBy;}
+    public void SetContentID(int contentID){this.contentID=contentID;}
+
+
     public void addCreator(int creatorID,String name, String nationality, creatorRole role){
         creators.add(new Creator(creatorID,name,nationality,role));
     }
     public void addGenre(String genr){genres.add(new genre(genr));}
     public void addReview(String review,String date){reviews.add(new review(date,review));}
-
 
 }
