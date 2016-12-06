@@ -1,6 +1,5 @@
 package Model;
-
-import java.util.Date;
+import java.util.ArrayList;
 
 /**
  * Created by nicla on 2016-11-30.
@@ -10,13 +9,19 @@ public class content {
     private String title;
     private String releaseDate;
     private String type;
-    private String genre;
+    private int rating;
+    private ArrayList<Creator> creators;;
+    private ArrayList<genre> genres;
+    private ArrayList<review> reviews;
 
-    public content(String title, String releaseDate, String type, String genre){
+    public content(String title, String releaseDate, String type,int rating){
+        creators = new ArrayList<>();
+        genres = new ArrayList<>();
+        reviews = new ArrayList<>();
+        this.rating = rating;
         this.title = title;
         this.releaseDate = releaseDate;
         this.type = type;
-        this.genre = genre;
     }
     public content (){
     }
@@ -33,15 +38,18 @@ public class content {
         return type;
     }
 
-    public String getGenre(){
-        return genre;
-    }
 
     public void SetTitle(String Title){this.title=Title;}
 
     public void SetReleaseDate(String releaseDate){this.releaseDate=releaseDate;}
 
-    public void SetType(String type){this.type=type;}
+    public void SetType(String type){this.type=type; }
 
-    public void Setgenre(String genre){this.genre=genre;}
+    public void addCreator(int creatorID,String name, String nationality, creatorRole role){
+        creators.add(new Creator(creatorID,name,nationality,role));
+    }
+    public void addGenre(String genr){genres.add(new genre(genr));}
+    public void addReview(String review,String date){reviews.add(new review(date,review));}
+
+
 }

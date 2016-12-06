@@ -1,6 +1,6 @@
 package sample;
 import java.sql.*;
-
+import Model.*;
 /**
  * Created by Glantz on 2016-12-06.
  */
@@ -117,6 +117,36 @@ public class SQL_Query {
         } finally {
             if (stmt != null) {
                 stmt.close();
+            }
+        }
+    }
+    public void getsomething(Connection con, Model model, String query) throws SQLException{
+
+
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = con.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery(query);
+            ResultSetMetaData metaData = rs.getMetaData();
+            int ccount = metaData.getColumnCount();
+            for (int c = 1; c <= ccount; c++) {
+                System.out.print(metaData.getColumnName(c) + "\t");
+            }
+            System.out.println();
+
+
+            while (rs.next()) {
+
+                rs.getInt("contentID");
+                rs.getString("title");
+                rs.getString("releaseDate");
+                rs.getString("type");
+                rs.getString("addedBy");
+            }
+
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
             }
         }
     }

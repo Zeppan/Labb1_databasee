@@ -17,6 +17,7 @@ public class Creator {
         this.creatorID = creatorID;
     }
 
+
     public String getCreatorName(){
         return creatorName;
     }

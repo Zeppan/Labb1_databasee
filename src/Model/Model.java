@@ -8,15 +8,16 @@ import java.util.ArrayList;
  */
 public class Model {
 
-    private ArrayList<content> content;
-    private ArrayList<Creator> creators;
-    private ArrayList<rating> ratings;
-    private ArrayList<user> user;
-
+    public ArrayList<content> content;
+    private user user;
     public Model() {
         content = new ArrayList<>();
-        creators = new ArrayList<>();
-        ratings = new ArrayList<>();
-        user = new ArrayList<>();
+
+        user = new user();
+    }
+
+    public void createContent(){
+        content cont = new content();
+
     }
 }

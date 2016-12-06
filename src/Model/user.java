@@ -16,6 +16,7 @@ public class user {
         this.name = name;
         this.privilage = privilage;
     }
+    public user(){}
 
     public String getUsername(){
         return username;

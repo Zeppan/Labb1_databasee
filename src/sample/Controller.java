@@ -25,7 +25,8 @@ public class Controller implements Runnable{
     //
 
 
-    private Model model;
+    private Model model = new Model();
+
 
     public Controller(){
         model = new Model();
@@ -56,11 +57,12 @@ public class Controller implements Runnable{
 
             // TEST STATEMENTS
             // ****************************
-             sql.SelectQuery(con,"SELECT * FROM content");
+            // sql.SelectQuery(con,"SELECT * FROM content");
            // insertIntoContent(con);
            // insertIntoCreator(con,"Mattias Kågström","SWE","Actor","hglantz@kth.se");
-            sql.insertIntoCreatedContent(con,6,1);
-            sql.SelectQuery(con,"SELECT * FROM content");
+           // sql.insertIntoCreatedContent(con,6,1);
+          //  sql.SelectQuery(con,"SELECT * FROM content");
+           // sql.getsomething(con,"SELECT * FROM content");
             //******************************
         } finally{
             try{
