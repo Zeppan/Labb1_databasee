@@ -122,7 +122,7 @@ public class SQL_Query {
     }
     public void getsomething(Connection con, Model model, String query) throws SQLException{
 
-
+    content tmp = new content();
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement(query);
@@ -133,15 +133,12 @@ public class SQL_Query {
                 System.out.print(metaData.getColumnName(c) + "\t");
             }
             System.out.println();
-
-
             while (rs.next()) {
-
-                rs.getInt("contentID");
-                rs.getString("title");
-                rs.getString("releaseDate");
-                rs.getString("type");
-                rs.getString("addedBy");
+                tmp.SetContentID(rs.getInt("contentID"));
+                tmp.SetTitle(rs.getString("title"));
+                tmp.SetReleaseDate(rs.getString("releaseDate"));
+                tmp.SetType(rs.getString("type"));
+                tmp.SetaddedBy(rs.getString("addedBy"));
             }
 
         } finally {
