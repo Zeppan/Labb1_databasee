@@ -30,14 +30,15 @@ public class content {
     public String getTitle(){
         return title;
     }
-
     public String getReleaseDate(){
         return releaseDate;
     }
-
     public String getType(){
         return type;
     }
+    public String getAddedBy(){return addedBy;}
+    public int getContentID(){return contentID;}
+    public int getRating(){return rating;}
 
 
     public void SetTitle(String Title){this.title=Title;}

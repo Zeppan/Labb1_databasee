@@ -120,27 +120,22 @@ public class SQL_Query {
             }
         }
     }
-    public void getsomething(Connection con, Model model, String query) throws SQLException{
+    public void getContent(Connection con, Model model, String query) throws SQLException{
 
-    content tmp = new content();
+
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery(query);
-            ResultSetMetaData metaData = rs.getMetaData();
-            int ccount = metaData.getColumnCount();
-            for (int c = 1; c <= ccount; c++) {
-                System.out.print(metaData.getColumnName(c) + "\t");
-            }
-            System.out.println();
             while (rs.next()) {
+                content tmp = new content();
                 tmp.SetContentID(rs.getInt("contentID"));
                 tmp.SetTitle(rs.getString("title"));
                 tmp.SetReleaseDate(rs.getString("releaseDate"));
                 tmp.SetType(rs.getString("type"));
                 tmp.SetaddedBy(rs.getString("addedBy"));
+                model.content.add(tmp);
             }
-
         } finally {
             if (pstmt != null) {
                 pstmt.close();
