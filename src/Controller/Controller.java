@@ -11,7 +11,7 @@ public class Controller implements Runnable{
 
 
 
-    public static void connectToDatabase(ActionEvent e, String username, String password, String dbName) throws Exception{
+    public static void connectToDatabase(String username, String password, String dbName) throws Exception{
         String server = "jdbc:mysql://localhost:3306/" + dbName + "?UseClientEnc=UTF8";
         Connection con = null;
         SQL_Query sql = new SQL_Query();
