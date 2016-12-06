@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Created by nicla on 2016-12-06.
+ * Created by niclas on 2016-12-06.
  */
 public class mainStageController {
 
@@ -18,5 +18,13 @@ public class mainStageController {
         Parent root = FXMLLoader.load(getClass().getResource("../FXML/tableView.fxml"));
         TableView.setScene(new Scene(root));
         TableView.show();
+    }
+
+    @FXML
+    public void addMedia(ActionEvent e) throws Exception{
+        Stage media = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("../FXML/addMedia.fxml"));
+        media.setScene(new Scene(root));
+        media.show();
     }
 }

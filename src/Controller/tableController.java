@@ -6,7 +6,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 /**
- * Created by nicla on 2016-12-06.
+ * Created by Niclas on 2016-12-06.
  */
 public class tableController {
 
@@ -22,7 +22,7 @@ public class tableController {
         TableColumn clm3 = new TableColumn("Test");
         TableColumn clm4 = new TableColumn("Test");
 
-        title.setText("Hej!");
+        title.setText("Search Results");
 
         tblView.getColumns().addAll(clm1, clm2, clm3, clm4);
     }
