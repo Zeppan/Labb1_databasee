@@ -25,7 +25,7 @@ public class Controller implements Runnable{
 
             // TEST STATEMENTS
             // ****************************
-            sql.getcontentReviews(con,model,"elias");
+            //sql.getcontentReviews(con,model,"elias");
 
              //sql.SelectQuery(con,"SELECT * FROM content");
            // insertIntoContent(con);
