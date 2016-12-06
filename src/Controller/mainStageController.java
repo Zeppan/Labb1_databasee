@@ -21,18 +21,8 @@ public class mainStageController {
     public void showTable(ActionEvent e) throws Exception{
         Stage TableView = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("../FXML/tableView.fxml"));
-        TableView.setTitle("Table");
         TableView.setScene(new Scene(root));
         //tblViewTitle.setText("test");
-
-        //For dynamic calculate later on
-        TableColumn clm1 = new TableColumn("Test");
-        TableColumn clm2 = new TableColumn("Test");
-        TableColumn clm3 = new TableColumn("Test");
-        TableColumn clm4 = new TableColumn("Test");
-
-        tblView.getColumns().addAll(clm1, clm2, clm3, clm4);
-
         TableView.show();
     }
 }
