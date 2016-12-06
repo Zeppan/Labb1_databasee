@@ -5,8 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="689.0" prefWidth="1296.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="689.0" prefWidth="1296.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.mainStageController">
    <children>
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1296.0">
         <menus>
@@ -19,17 +18,17 @@
                <items>
                   <Menu mnemonicParsing="false" text="CD">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Genre" />
-                      <MenuItem mnemonicParsing="false" text="Artist" />
-                        <MenuItem mnemonicParsing="false" text="CD-Name" />
-                        <MenuItem mnemonicParsing="false" text="Ratings" />
+                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="Genre" />
+                      <MenuItem mnemonicParsing="false" onAction="#showTable" text="Artist" />
+                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="CD-Name" />
+                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="Ratings" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Movie">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Ratings" />
-                      <MenuItem mnemonicParsing="false" text="Director" />
-                        <MenuItem mnemonicParsing="false" text="Genre" />
+                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="Ratings" />
+                      <MenuItem mnemonicParsing="false" onAction="#showTable" text="Director" />
+                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="Genre" />
                     </items>
                   </Menu>
                </items>
