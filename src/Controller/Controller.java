@@ -8,13 +8,7 @@ import sample.SQL_Query;
 
 public class Controller implements Runnable{
 
-
-    private static String username;
-    private static String password;
-    private static String dbName;
-
     private Model model;
-
 
     public Controller(){
         model = new Model();
