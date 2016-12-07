@@ -1,5 +1,7 @@
 package sample;
+
 import java.sql.*;
+
 import Model.*;
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
@@ -11,24 +13,29 @@ public class SQL_Query {
 
     /**
      * Insert into content, addedBy is a foreign key and requires ths is all ready exist in the user table
+     *
      * @param con
-     * @param title
-     * @param releaseDate
-     * @param type
-     * @param addedBy
+     * @param content
      * @throws SQLException
      */
-    public void insertIntoContent(Connection con,String title,String releaseDate,String type, String addedBy)throws SQLException {
+    public void insertIntoContent(Connection con, content content) throws SQLException {
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("INSERT INTO content(title,releaseDate,type,addedBy) VALUES(?,?,?,?)");
-            pstmt.setString(1,title);
-            pstmt.setString(2,releaseDate);
-            pstmt.setString(3,type);
-            pstmt.setString(4,addedBy);
+            pstmt = con.prepareStatement("INSERT INTO content(title,releaseDate,type,addedBy) VALUES(?,?,?,?)", pstmt.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, content.getTitle());
+            pstmt.setString(2, content.getReleaseDate());
+            pstmt.setString(3, content.getType());
+            pstmt.setString(4, content.getAddedBy());
             pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            try {
+                if (rs.next()) {
+                    content.SetContentID(rs.getInt(1));
+                }
+            } finally {
+                if (rs != null) rs.close();
+            }
             pstmt.close();
-
         } finally {
             if (pstmt != null) pstmt.close();
         }
@@ -36,43 +43,54 @@ public class SQL_Query {
 
     /**
      * Insert into creator, addedBy is a foreign key and requires that it's all ready exist in the user table
+     *
      * @param con
-     * @param name
-     * @param nationality
-     * @param role
-     * @param addedBy
+     * @param content
      * @throws SQLException
      */
-    public void insertIntoCreator(Connection con,String name,String nationality,String role, String addedBy)throws SQLException{
+    public void insertIntoCreator(Connection con, content content) throws SQLException {
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("INSERT INTO creator(name,nationality,role,addedBy) VALUES(?,?,?,?)");
-            pstmt.setString(1,name);
-            pstmt.setString(2,nationality);
-            pstmt.setString(3,role);
-            pstmt.setString(4,addedBy);
-            pstmt.executeUpdate();
-            pstmt.close();
+            for (Creator creator : content.getCreators()) {
+                pstmt = con.prepareStatement("INSERT INTO creator(name,nationality,role,addedBy) VALUES(?,?,?,?)", pstmt.RETURN_GENERATED_KEYS);
+                pstmt.setString(1, creator.getCreatorName());
+                pstmt.setString(2, creator.getNationality());
+                pstmt.setString(3, creator.getRole());
+                pstmt.setString(4, creator.getAddedBy());
+                pstmt.executeUpdate();
+                ResultSet rs = pstmt.getGeneratedKeys();
+                try {
+                    if (rs.next()) {
+                        creator.setCreatorID(rs.getInt(1));
+                    }
+                } finally {
+                    if (rs != null) rs.close();
+                }
+                pstmt.close();
+            }
 
         } finally {
             if (pstmt != null) pstmt.close();
+
         }
     }
 
     /**
      * Insert into created content, often used when you add a new movie and add a actor on it. Works the same on CD's
+     *
      * @param con
-     * @param contentID
-     * @param creatorID
+     * @param content
      * @throws SQLException
      */
-    public void insertIntoCreatedContent(Connection con,int contentID, int creatorID)throws SQLException{
+    public void insertIntoCreatedContent(Connection con, content content) throws SQLException {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSERT INTO CreatedContent VALUES(?,?)");
-            pstmt.setInt(1,contentID);
-            pstmt.setInt(2,creatorID);
-            pstmt.executeUpdate();
+            for (Creator creator : content.getCreators()) {
+                pstmt.setInt(1, content.getContentID());
+                pstmt.setInt(2, creator.getCreatorID());
+                pstmt.executeUpdate();
+            }
             pstmt.close();
 
         } finally {
@@ -82,11 +100,12 @@ public class SQL_Query {
 
     /**
      * Display what is stored in the specific table that is set in the query
+     *
      * @param con
      * @param query
      * @throws SQLException
      */
-    public void SelectQuery(Connection con, String query) throws SQLException{
+    public void SelectQuery(Connection con, String query) throws SQLException {
 
 
         Statement stmt = null;
@@ -117,7 +136,8 @@ public class SQL_Query {
             }
         }
     }
-    public void getContent(Connection con, Model model, String query) throws SQLException{
+
+    public void getContent(Connection con, Model model, String query) throws SQLException {
 
 
         PreparedStatement pstmt = null;
@@ -139,26 +159,24 @@ public class SQL_Query {
             }
         }
     }
-    public void getcontentReviews(Connection con, Model model, String title) throws SQLException{
+
+    public void getcontentReviews(Connection con, Model model, String title) throws SQLException {
 
 
         PreparedStatement pstmt = null;
         try {
             content tmp = new content();
             pstmt = con.prepareStatement("SELECT title,releaseDate,review,review.date  FROM content,review WHERE content.contentID=review.contentID AND title = ?");
-            pstmt.setString(1,title);
+            pstmt.setString(1, title);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
             tmp.SetTitle(rs.getString("title"));
             tmp.SetReleaseDate(rs.getString("releaseDate"));
-            tmp.addReview(rs.getString("date"),rs.getString("review"));
+            tmp.addReview(rs.getString("date"), rs.getString("review"));
             while (rs.next()) {
-            tmp.addReview(rs.getString("date"),rs.getString("review"));
+                tmp.addReview(rs.getString("date"), rs.getString("review"));
             }
             model.content.add(tmp);
-            System.out.println(model.getContent().get(0).getTitle());
-            System.out.println(model.getContent().get(0).getReleaseDate());
-            System.out.println(model.getContent().get(0).getReviews());
         } finally {
             if (pstmt != null) {
                 pstmt.close();

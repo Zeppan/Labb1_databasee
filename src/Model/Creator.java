@@ -8,9 +8,10 @@ public class Creator {
     private String creatorName;
     private String nationality;
     private int creatorID;
-    private creatorRole role;
+    private String role;
+    private String addedBy;
 
-    public Creator(int creatorID, String creatorName, String nationality, creatorRole role){
+    public Creator(int creatorID, String creatorName, String nationality, String role){
         this.creatorName = creatorName;
         this.nationality = nationality;
         this.role = role;
@@ -21,7 +22,7 @@ public class Creator {
     public String getCreatorName(){
         return creatorName;
     }
-
+    public String getAddedBy(){return addedBy;}
     public String getNationality(){
         return nationality;
     }
@@ -30,7 +31,7 @@ public class Creator {
         return creatorID;
     }
 
-    public creatorRole getRole(){
+    public String getRole(){
         return role;
     }
 
@@ -40,6 +41,6 @@ public class Creator {
 
     public void setCreatorID(int creatorID){this.creatorID=creatorID;}
 
-    public void setRole(creatorRole role){this.role=role;}
+    public void setRole(String role){this.role=role;}
 
 }

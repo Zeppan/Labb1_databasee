@@ -29,7 +29,7 @@ public class content {
         genres = new ArrayList<>();
         reviews = new ArrayList<>();
     }
-
+    public ArrayList<Creator> getCreators(){ return creators;    }
     public String getTitle(){
         return title;
     }
@@ -43,13 +43,11 @@ public class content {
     public int getContentID(){return contentID;}
     public int getRating(){return rating;}
     public String getReviews(){
-
         String tmp = "";
         for(review rev : reviews){
             tmp += rev.getReview() + ", ";
         }
         return tmp;}
-
 
     public void SetTitle(String Title){this.title=Title;}
     public void SetReleaseDate(String releaseDate){this.releaseDate=releaseDate;}
