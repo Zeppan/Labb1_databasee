@@ -59,7 +59,7 @@ public class content {
 
 
     public void addCreator(int creatorID,String name, String nationality, creatorRole role){
-        creators.add(new Creator(creatorID,name,nationality,role));
+        //creators.add(new Creator(creatorID,name,nationality,role));
     }
     public void addGenre(String genr){genres.add(new genre(genr));}
     public void addReview(String date,String review){reviews.add(new review(date,review));}
