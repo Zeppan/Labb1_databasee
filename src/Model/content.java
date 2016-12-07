@@ -25,6 +25,9 @@ public class content {
         this.type = type;
     }
     public content (){
+        creators = new ArrayList<>();
+        genres = new ArrayList<>();
+        reviews = new ArrayList<>();
     }
 
     public String getTitle(){
@@ -39,7 +42,13 @@ public class content {
     public String getAddedBy(){return addedBy;}
     public int getContentID(){return contentID;}
     public int getRating(){return rating;}
-    public ArrayList<review> getReviews(){return reviews;}
+    public String getReviews(){
+
+        String tmp = "";
+        for(review rev : reviews){
+            tmp += rev.getReview() + ", ";
+        }
+        return tmp;}
 
 
     public void SetTitle(String Title){this.title=Title;}
@@ -55,6 +64,9 @@ public class content {
         creators.add(new Creator(creatorID,name,nationality,role));
     }
     public void addGenre(String genr){genres.add(new genre(genr));}
-    public void addReview(String review,String date){reviews.add(new review(date,review));}
+    public void addReview(String date,String review){reviews.add(new review(date,review));}
+    public void addReview(String rev){
+        reviews.add(new review(rev));
+    }
 
 }

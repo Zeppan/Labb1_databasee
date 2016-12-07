@@ -12,6 +12,10 @@ public class review {
         this.date = date;
         this.review = review;
     }
+    public review(String review){
+        this.review = review;
+    }
+
 
     public String getDate(){
         return date;

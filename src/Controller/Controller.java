@@ -25,21 +25,7 @@ public class Controller implements Runnable{
 
             // TEST STATEMENTS
             // ****************************
-            //sql.getcontentReviews(con,model,"elias");
-
-             //sql.SelectQuery(con,"SELECT * FROM content");
-           // insertIntoContent(con);
-           // insertIntoCreator(con,"Mattias Kågström","SWE","Actor","hglantz@kth.se");
-           // sql.insertIntoCreatedContent(con,6,1);
-          //  sql.SelectQuery(con,"SELECT * FROM content");
-            //sql.getsomething(con, model,"SELECT * FROM content");
-
-             //sql.SelectQuery(con,"SELECT * FROM content");
-           // insertIntoContent(con);
-           // insertIntoCreator(con,"Mattias Kågström","SWE","Actor","hglantz@kth.se");
-            //sql.insertIntoCreatedContent(con,6,1);
-            //sql.SelectQuery(con,"SELECT * FROM content");
-
+            sql.getcontentReviews(con,model,"elias");
             //******************************
         } finally{
             try{

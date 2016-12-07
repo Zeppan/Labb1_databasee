@@ -144,16 +144,16 @@ public class SQL_Query {
 
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("SELECT title,releaseDate,review  FROM content,review WHERE content.contentID=review.contentID AND  ?");
-
-            ResultSet rs = pstmt.executeQuery("SELECT title,releaseDate,review  FROM content,review WHERE content.contentID=review.contentID AND  ?");
-            pstmt.setString(1,title);
             content tmp = new content();
+            pstmt = con.prepareStatement("SELECT title,releaseDate,review,review.date  FROM content,review WHERE content.contentID=review.contentID AND title = ?");
+            pstmt.setString(1,title);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
             tmp.SetTitle(rs.getString("title"));
             tmp.SetReleaseDate(rs.getString("releaseDate"));
             tmp.addReview(rs.getString("date"),rs.getString("review"));
             while (rs.next()) {
-                tmp.addReview(rs.getString("date"),rs.getString("review"));
+            tmp.addReview(rs.getString("date"),rs.getString("review"));
             }
             model.content.add(tmp);
             System.out.println(model.getContent().get(0).getTitle());
