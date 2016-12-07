@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.searchByController">
+   <children>
+      <Label layoutX="33.0" layoutY="25.0" prefHeight="75.0" prefWidth="141.0" text="Search by:">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <HBox layoutX="33.0" layoutY="100.0">
+         <children>
+            <VBox>
+               <children>
+                  <Label text="Creator Name:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Genre:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Rating:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Title:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <TextField fx:id="name" />
+                  <TextField fx:id="genre" />
+                  <TextField fx:id="rating" />
+                  <TextField fx:id="title" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Button mnemonicParsing="false" onAction="#searchByName" text="Go!" />
+                  <Button mnemonicParsing="false" onAction="#searchByGenre" text="Go!" />
+                  <Button mnemonicParsing="false" onAction="#searchByRating" text="Go!" />
+                  <Button mnemonicParsing="false" onAction="#SearchByTitle" text="Go!" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

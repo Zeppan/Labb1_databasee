@@ -13,9 +13,9 @@ import javafx.stage.Stage;
 public class mainStageController {
 
     @FXML
-    public void showTable(ActionEvent e) throws Exception{
+    public void showSearch(ActionEvent e) throws Exception{
         Stage TableView = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("../FXML/tableView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../FXML/searchBy.fxml"));
         TableView.setScene(new Scene(root));
         TableView.show();
     }

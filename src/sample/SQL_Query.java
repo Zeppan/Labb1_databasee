@@ -105,7 +105,7 @@ public class SQL_Query {
      * @param content
      * @throws SQLException
      */
-    public void insertIntoContentGenre(Connection con, content content) throws SQLException {
+    /*public void insertIntoContentGenre(Connection con, content content) throws SQLException {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSERT INTO contentGenre VALUES(?,?)");
@@ -121,7 +121,7 @@ public class SQL_Query {
         }
 
 
-    }
+    }*/
 
     /**
      * Display what is stored in the specific table that is set in the query

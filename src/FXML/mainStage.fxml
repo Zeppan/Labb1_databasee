@@ -16,27 +16,11 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Search">
                <items>
-                  <Menu mnemonicParsing="false" text="CD">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="Genre" />
-                      <MenuItem mnemonicParsing="false" onAction="#showTable" text="Artist" />
-                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="CD-Name" />
-                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="Ratings" />
-                    </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Movie">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="Ratings" />
-                      <MenuItem mnemonicParsing="false" onAction="#showTable" text="Director" />
-                        <MenuItem mnemonicParsing="false" onAction="#showTable" text="Genre" />
-                    </items>
-                  </Menu>
-               </items>
-          </Menu>
+                  <MenuItem mnemonicParsing="false" onAction="#showSearch" text="Search" />
+               </items></Menu>
           <Menu mnemonicParsing="false" text="Add">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#addMedia" text="New CD" />
-                  <MenuItem mnemonicParsing="false" onAction="#addMedia" text="New Movie" />
+              <MenuItem mnemonicParsing="false" onAction="#addMedia" text="Add new media" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Help">
