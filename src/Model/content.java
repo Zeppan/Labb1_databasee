@@ -29,6 +29,7 @@ public class content {
         genres = new ArrayList<>();
         reviews = new ArrayList<>();
     }
+    public ArrayList<genre> getGenres(){ return genres;}
     public ArrayList<Creator> getCreators(){ return creators;    }
     public String getTitle(){
         return title;
@@ -58,8 +59,8 @@ public class content {
     public void SetContentID(int contentID){this.contentID=contentID;}
 
 
-    public void addCreator(int creatorID,String name, String nationality, creatorRole role){
-        creators.add(new Creator(creatorID,name,nationality,role));
+    public void addCreator(int creatorID,String name, String nationality, String role, String addedBy){
+        creators.add(new Creator(creatorID,name,nationality,role, addedBy));
     }
     public void addGenre(String genr){genres.add(new genre(genr));}
     public void addReview(String date,String review){reviews.add(new review(date,review));}
