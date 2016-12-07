@@ -20,4 +20,10 @@ public class rating {
     public int getRating(){
         return rating;
     }
+
+
+    @Override
+    public String toString(){
+        return date.toString();
+    }
 }

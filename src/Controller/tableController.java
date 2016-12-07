@@ -1,29 +1,57 @@
 package Controller;
 
+import Model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.util.ArrayList;
 
 /**
  * Created by Niclas on 2016-12-06.
  */
 public class tableController {
 
+    private ArrayList<content> contents;
+
     @FXML
-    private TableView tblView;
+    private TableView<content> tblView;
     @FXML
     private Label title;
 
-    public void initialize(){
-        //For dynamic calculate later on
-        TableColumn clm1 = new TableColumn("Test");
-        TableColumn clm2 = new TableColumn("Test");
-        TableColumn clm3 = new TableColumn("Test");
-        TableColumn clm4 = new TableColumn("Test");
+    public void initialize(ArrayList<content> info){
+        tblView.setEditable(true);
+
+        ObservableList<content> data = FXCollections.observableArrayList(info);
+
+
+        TableColumn Title = new TableColumn("Title");
+        Title.setCellValueFactory(new PropertyValueFactory<content,String>("Title"));
+
+        TableColumn ReleaseDate = new TableColumn("ReleaseDate");
+        ReleaseDate.setCellValueFactory(new PropertyValueFactory<content,String>("releaseDate"));
+
+        TableColumn Type = new TableColumn("Type");
+        Type.setCellValueFactory(new PropertyValueFactory<content,String>("type"));
+
+        TableColumn ratings = new TableColumn("Rating");
+        ratings.setCellValueFactory(new PropertyValueFactory<content,String>("rating"));
+
+        tblView.setItems(data);
+        tblView.getColumns().addAll(Title, ReleaseDate, Type, ratings);
+
 
         title.setText("Search Results");
 
-        tblView.getColumns().addAll(clm1, clm2, clm3, clm4);
     }
+
+    public void setArrayList(ArrayList<content> information){
+        this.contents = new ArrayList<>();
+        this.contents = information;
+    }
+
 }
