@@ -99,6 +99,31 @@ public class SQL_Query {
     }
 
     /**
+     * Insert into contentGenre, used when a content is created. Adding all the genres the movie has.
+     *
+     * @param con
+     * @param content
+     * @throws SQLException
+     */
+    public void insertIntoContentGenre(Connection con, content content) throws SQLException {
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = con.prepareStatement("INSERT INTO contentGenre VALUES(?,?)");
+            for (genre genre : content.getGenres()) {
+                pstmt.setInt(1, content.getContentID());
+                pstmt.setString(2, genre.getGenre());
+                pstmt.executeUpdate();
+            }
+            pstmt.close();
+
+        } finally {
+            if (pstmt != null) pstmt.close();
+        }
+
+
+    }
+
+    /**
      * Display what is stored in the specific table that is set in the query
      *
      * @param con

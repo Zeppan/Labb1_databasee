@@ -11,11 +11,12 @@ public class Creator {
     private String role;
     private String addedBy;
 
-    public Creator(int creatorID, String creatorName, String nationality, String role){
+    public Creator(int creatorID, String creatorName, String nationality, String role,String addedBy){
         this.creatorName = creatorName;
         this.nationality = nationality;
         this.role = role;
         this.creatorID = creatorID;
+        this.addedBy = addedBy;
     }
 
 
