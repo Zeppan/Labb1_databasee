@@ -29,13 +29,13 @@ public class searchByController {
 
         ArrayList<content> tabl = new ArrayList<>();
 
+      /*  tabl.add(new content(1, "hej", "shit", "potatis", 3));
         tabl.add(new content(1, "hej", "shit", "potatis", 3));
         tabl.add(new content(1, "hej", "shit", "potatis", 3));
         tabl.add(new content(1, "hej", "shit", "potatis", 3));
         tabl.add(new content(1, "hej", "shit", "potatis", 3));
         tabl.add(new content(1, "hej", "shit", "potatis", 3));
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
+        tabl.add(new content(1, "hej", "shit", "potatis", 3));*/
 
         tableController table = fxmlLoader.<tableController>getController();
         table.initialize(tabl);
