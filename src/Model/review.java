@@ -9,27 +9,40 @@ public class review {
     private String review;
     private String addedBy;
 
-    public review(String date, String review){
+    public review(String date, String review,String addedBy) {
         this.date = date;
         this.review = review;
+        this.addedBy = addedBy;
     }
-    public review(String review){
+
+    public review(String review) {
         this.review = review;
     }
 
 
-    public String getDate(){
+    public String getDate() {
         return date;
     }
 
-    public String getReview(){
+    public String getReview() {
         return review;
     }
-    public String getAddedBy(){ return addedBy;}
 
-    public void setDate(String date){this.date=date;}
+    public String getAddedBy() {
+        return addedBy;
+    }
 
-    public void setReview(String review){this.review=review;}
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
 
 
 }

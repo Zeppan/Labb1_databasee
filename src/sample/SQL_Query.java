@@ -24,8 +24,8 @@ public class SQL_Query {
         try {
             pstmt = con.prepareStatement("INSER INTO review(userName,contentID,addedBY) VALUES(?,?,?)");
             pstmt.setInt(1, content.getContentID());
-            pstmt.setString(2, content.getReviewsArray().get(content.getReviewsArray().size()-1).getReview());
-            pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size()-1).getAddedBy());
+            pstmt.setString(2, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getReview());
+            pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
             pstmt.executeUpdate();
         } finally {
             if (pstmt != null) pstmt.close();
@@ -36,7 +36,7 @@ public class SQL_Query {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("");
-            pstmt.setString(1, content.);
+            //pstmt.setString(1, content.);
             pstmt.setInt(2, content.getContentID());
             pstmt.setString(3, content.getRating());
             pstmt.executeUpdate();
@@ -228,9 +228,10 @@ public class SQL_Query {
                     tmp.SetTitle(rs.getString("title"));
                     tmp.SetReleaseDate(rs.getString("content.releaseDate"));
                     tmp.SetType(rs.getString("content.type"));
-                    tmp.SetRating(avgRating(con, rs.getInt("content.contentID")));
+                    tmp.SetRatingScore(avgRating(con, rs.getInt("content.contentID")));
                     tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
                     tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
+                    tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
                     model.content.add(tmp);
                 }
             } finally {
@@ -309,23 +310,55 @@ public class SQL_Query {
         return Creators;
     }
 
-    public void getContentReviews(Connection con, Model model, String title) throws Exception {
+    public ArrayList<review> getReviews(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
+        ArrayList<review> reviews = new ArrayList<>();
         try {
-            content tmp = new content();
-            pstmt = con.prepareStatement("SELECT title,releaseDate,review,review.date  FROM content,review WHERE content.contentID=review.contentID AND title = ?");
-            pstmt.setString(1, title);
+            pstmt = con.prepareStatement("SELECT * FROM review WHERE contentID = ?");
+            pstmt.setInt(1, contentID);
             ResultSet rs = pstmt.executeQuery();
-            rs.next();
-            tmp.SetTitle(rs.getString("title"));
-            tmp.SetReleaseDate(rs.getString("releaseDate"));
-            tmp.addReview(rs.getString("date"), rs.getString("review"));
-            while (rs.next()) {
-                tmp.addReview(rs.getString("date"), rs.getString("review"));
+            try {
+                while (rs.next()) {
+                    reviews.add(new review(rs.getString("date"), rs.getString("review"), rs.getString("userName")));
+                }
+
+            } finally {
+                if (rs != null) rs.close();
             }
-            model.content.add(tmp);
         } finally {
             if (pstmt != null) pstmt.close();
         }
+        return reviews;
+    }
+
+    public void searchRating(Connection con, Model model, String rating) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            content tmp = new content();
+            pstmt = con.prepareStatement("SELECT content.contentID,title, content.releaseDate,content.type FROM content, contentGenre,creator,CreatedContent,rating WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID  AND creator.name LIKE ? AND content.title LIKE ? AND contentGenre.genre LIKE ? GROUP BY contentID");
+            pstmt.setString(1, rating + "%");
+
+            ResultSet rs = pstmt.executeQuery();
+            try {
+                while (rs.next()) {
+                    tmp.SetContentID(rs.getInt("content.contentID"));
+                    tmp.SetTitle(rs.getString("title"));
+                    tmp.SetReleaseDate(rs.getString("content.releaseDate"));
+                    tmp.SetType(rs.getString("content.type"));
+                    tmp.SetRatingScore(avgRating(con, rs.getInt("content.contentID")));
+                    tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
+                    tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
+                    tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
+                    model.content.add(tmp);
+                }
+            } finally {
+                if (rs != null) rs.close();
+            }
+
+        } finally {
+            if (pstmt != null) pstmt.close();
+        }
+
+
     }
 }
