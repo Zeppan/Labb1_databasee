@@ -29,13 +29,17 @@ public class searchByController {
 
         ArrayList<content> tabl = new ArrayList<>();
 
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
-        tabl.add(new content(1, "hej", "shit", "potatis", 3));
+        /*
+
+            Query här och sätt in värdena in i tabl array listan.
+
+         */
+
+        tabl.add(new content(1, "hej", "hej", "hej", "hej"));
+        tabl.add(new content(2, "abc", "abc", "abc", "abc"));
+
+        tabl.get(0).addReview("1337", "Denna film suger kuk");
+        tabl.get(1).addReview("1234", "Denna film är bäst!");
 
         tableController table = fxmlLoader.<tableController>getController();
         table.initialize(tabl);
