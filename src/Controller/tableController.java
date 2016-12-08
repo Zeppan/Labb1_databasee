@@ -83,7 +83,7 @@ public class tableController {
         item = tblView.getSelectionModel().getSelectedItems();
         String reviewText = reviewTextByUser.getText();
         item.get(0).addReview(reviewText);
-
+        content cnt = item.get(0);
 
     }
 

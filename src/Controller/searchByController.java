@@ -20,7 +20,7 @@ public class searchByController {
 
 
     @FXML
-    public void searchByName(ActionEvent e) throws IOException {
+    public void searchBy(ActionEvent e) throws IOException {
         Stage media = new Stage();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
@@ -49,19 +49,12 @@ public class searchByController {
         media.show();
     }
 
-    @FXML
-    public void searchByGenre(ActionEvent e){
-
-    }
 
     @FXML
     public void searchByRating(ActionEvent e){
 
     }
 
-    @FXML
-    public void SearchByTitle(ActionEvent e){
 
-    }
 
 }

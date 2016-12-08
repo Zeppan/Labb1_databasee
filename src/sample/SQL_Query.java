@@ -9,7 +9,7 @@ import Model.*;
 /**
  * Created by Glantz on 2016-12-06.
  */
-public class SQL_Query {
+public class SQL_Query implements SQL_Query_IF {
 
 
  void insertIntoReviews(Connection con, content content) throws Exception {
@@ -25,6 +25,7 @@ public class SQL_Query {
         }
     }
 
+    @Override
     public void insertIntoRating(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -38,6 +39,7 @@ public class SQL_Query {
         }
     }
 
+    @Override
     public void insertIntoContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -62,6 +64,7 @@ public class SQL_Query {
     }
 
 
+    @Override
     public void insertIntoCreator(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -90,6 +93,7 @@ public class SQL_Query {
     }
 
 
+    @Override
     public void insertIntoCreatedContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -107,6 +111,7 @@ public class SQL_Query {
     }
 
 
+    @Override
     public void insertIntoContentGenre(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -127,6 +132,7 @@ public class SQL_Query {
     }
 
 
+    @Override
     public void search(Connection con, Model model, String name, String genre, String title) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -159,6 +165,7 @@ public class SQL_Query {
 
     }
 
+    @Override
     public void searchRating(Connection con, Model model, String rating) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -191,6 +198,7 @@ public class SQL_Query {
 
     }
 
+    @Override
     public ArrayList<genre> getGenres(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<genre> genres = new ArrayList<genre>();
@@ -212,6 +220,7 @@ public class SQL_Query {
         return genres;
     }
 
+    @Override
     public String avgRating(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         String tmp;
@@ -231,6 +240,7 @@ public class SQL_Query {
         return tmp;
     }
 
+    @Override
     public ArrayList<Creator> getCreators(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<Creator> Creators = new ArrayList<>();
@@ -257,6 +267,7 @@ public class SQL_Query {
         return Creators;
     }
 
+    @Override
     public ArrayList<review> getReviews(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<review> reviews = new ArrayList<>();
