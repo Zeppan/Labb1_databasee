@@ -3,7 +3,7 @@ package Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
@@ -17,6 +17,7 @@ public class addController{
     private ArrayList<TextField> creators;
     private ArrayList<TextField> nationalities;
     private ArrayList<TextField> jobs;
+    private int nr = 2;
 
     @FXML
     private ChoiceBox<String> contentType;
@@ -38,13 +39,11 @@ public class addController{
     }
 
     @FXML
-    Button addMore;
-    @FXML
     VBox creatorBox;
 
     @FXML
     public void addCreator(ActionEvent e){
-        Label creator = new Label("Creator:");
+        Label creator = new Label("Creator " + nr + ":");
         TextField creatorTxtField = new TextField();
         creators.add(creatorTxtField);
 
@@ -52,19 +51,16 @@ public class addController{
         TextField nationalityTxtField = new TextField();
         nationalities.add(nationalityTxtField);
 
-        HBox more = new HBox();
         Label job = new Label("Job:");
         TextField jobTxtField = new TextField();
-        Button addAnother = new Button("+");
         jobs.add(jobTxtField);
-
-        more.getChildren().addAll(jobTxtField, addAnother);
 
         creator.setFont(new Font("Arial", 16));
         nationality.setFont(new Font("Arial", 16));
         job.setFont(new Font("Arial", 16));
 
-        creatorBox.getChildren().addAll(creator, creatorTxtField, nationality, nationalityTxtField, job, more);
+        creatorBox.getChildren().addAll(creator, creatorTxtField, nationality, nationalityTxtField, job, jobTxtField);
+        nr++;
     }
 
 
