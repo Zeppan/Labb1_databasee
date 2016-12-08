@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class content {
     private int contentID;
-    private String rating;
+    private rating rating;
     private String title;
     private String releaseDate;
     private String type;
@@ -16,7 +16,7 @@ public class content {
     private ArrayList<genre> genres;
     private ArrayList<review> reviews;
 
-    public content(int contentID, String title, String releaseDate, String type, String rating) {
+    public content(int contentID, String title, String releaseDate, String type, rating rating) {
         creators = new ArrayList<>();
         genres = new ArrayList<>();
         reviews = new ArrayList<>();
@@ -62,7 +62,7 @@ public class content {
     }
 
     public String getRating() {
-        return rating;
+        return rating.getRating();
     }
 
     public String getReviews() {
@@ -95,7 +95,7 @@ public class content {
         this.contentID = contentID;
     }
 
-    public void SetRating(String rating){ this.rating=rating;}
+    public void SetRatingScore( String rating){ this.rating.setRating(rating);}
 
     public void Setgenres(ArrayList<genre> genres){
         this.genres.addAll(genres);
@@ -115,8 +115,8 @@ public class content {
         genres.add(new genre(genr));
     }
 
-    public void addReview(String date, String review) {
-        reviews.add(new review(date, review));
+    public void addReview(String date, String review, String addedBy) {
+        reviews.add(new review(date, review,addedBy));
     }
 
     public void addReview(String rev) {
