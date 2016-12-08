@@ -12,14 +12,7 @@ import Model.*;
 public class SQL_Query {
 
 
-    /**
-     * Insert into content, addedBy is a foreign key and requires ths is all ready exist in the user table
-     *
-     * @param con
-     * @param content
-     * @throws SQLException
-     */
-    public void insertIntoReviews(Connection con, content content) throws Exception {
+ void insertIntoReviews(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSER INTO review(userName,contentID,addedBY) VALUES(?,?,?)");
@@ -35,7 +28,7 @@ public class SQL_Query {
     public void insertIntoRating(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("");
+            pstmt = con.prepareStatement("INSERT INTO rating(username,contentID,rating) VALUES(?,?,?)");
             pstmt.setString(1, content.getObjectRating().getAddedBy());
             pstmt.setInt(2, content.getContentID());
             pstmt.setString(3, content.getRating());
@@ -68,13 +61,7 @@ public class SQL_Query {
         }
     }
 
-    /**
-     * Insert into creator, addedBy is a foreign key and requires that it's all ready exist in the user table
-     *
-     * @param con
-     * @param content
-     * @throws SQLException
-     */
+
     public void insertIntoCreator(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -102,13 +89,7 @@ public class SQL_Query {
         }
     }
 
-    /**
-     * Insert into created content, often used when you add a new movie and add a actor on it. Works the same on CD's
-     *
-     * @param con
-     * @param content
-     * @throws SQLException
-     */
+
     public void insertIntoCreatedContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -125,20 +106,15 @@ public class SQL_Query {
         }
     }
 
-    /**
-     * Insert into contentGenre, used when a content is created. Adding all the genres the movie has.
-     *
-     * @param con
-     * @param content
-     * @throws SQLException
-     */
+
     public void insertIntoContentGenre(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("INSERT INTO contentGenre VALUES(?,?)");
+            pstmt = con.prepareStatement("INSERT INTO contentGenre VALUES(?,?,?)");
             for (genre genre : content.getGenres()) {
                 pstmt.setInt(1, content.getContentID());
                 pstmt.setString(2, genre.getGenre());
+                pstmt.setString(3, genre.getAddedBy());
                 pstmt.executeUpdate();
             }
             pstmt.close();
@@ -148,68 +124,6 @@ public class SQL_Query {
         }
 
 
-    }
-
-    /**
-     * Display what is stored in the specific table that is set in the query
-     *
-     * @param con
-     * @param query
-     * @throws SQLException
-     */
-    public void SelectQuery(Connection con, String query) throws Exception {
-
-
-        Statement stmt = null;
-        try {
-            // Execute the SQL statement
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            // Get the attribute names
-            ResultSetMetaData metaData = rs.getMetaData();
-            int ccount = metaData.getColumnCount();
-            for (int c = 1; c <= ccount; c++) {
-                System.out.print(metaData.getColumnName(c) + "\t");
-            }
-            System.out.println();
-
-            // Get the attribute values
-            while (rs.next()) {
-                for (int c = 1; c <= ccount; c++) {
-                    System.out.print(rs.getObject(c) + "\t");
-                }
-                System.out.println();
-            }
-
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-        }
-    }
-
-    public void getContent(Connection con, Model model, String query) throws Exception {
-
-
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = con.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                content tmp = new content();
-                tmp.SetContentID(rs.getInt("contentID"));
-                tmp.SetTitle(rs.getString("title"));
-                tmp.SetReleaseDate(rs.getString("releaseDate"));
-                tmp.SetType(rs.getString("type"));
-                tmp.SetaddedBy(rs.getString("addedBy"));
-                model.content.add(tmp);
-            }
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-        }
     }
 
 
@@ -242,6 +156,38 @@ public class SQL_Query {
         } finally {
             if (pstmt != null) pstmt.close();
         }
+
+    }
+
+    public void searchRating(Connection con, Model model, String rating) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            content tmp = new content();
+            pstmt = con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate, content.type, content.addedBy, AVG(rating.rating) AS rating FROM content,rating WHERE content.contentID = rating.contentID GROUP BY content.contentID HAVING AVG(rating.rating) LIKE ?");
+            pstmt.setString(1, rating + "%");
+
+            ResultSet rs = pstmt.executeQuery();
+            try {
+                while (rs.next()) {
+                    tmp.SetContentID(rs.getInt("contentID"));
+                    tmp.SetTitle(rs.getString("title"));
+                    tmp.SetReleaseDate(rs.getString("content.releaseDate"));
+                    tmp.SetType(rs.getString("content.type"));
+                    tmp.SetaddedBy(rs.getString("addedBy"));
+                    tmp.SetRatingScore(avgRating(con, rs.getInt("content.contentID")));
+                    tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
+                    tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
+                    tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
+                    model.content.add(tmp);
+                }
+            } finally {
+                if (rs != null) rs.close();
+            }
+
+        } finally {
+            if (pstmt != null) pstmt.close();
+        }
+
 
     }
 
@@ -332,35 +278,5 @@ public class SQL_Query {
         return reviews;
     }
 
-    public void searchRating(Connection con, Model model, String rating) throws Exception {
-        PreparedStatement pstmt = null;
-        try {
-            content tmp = new content();
-            pstmt = con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate, content.type, content.addedBy, AVG(rating.rating) AS rating FROM content,rating WHERE content.contentID = rating.contentID GROUP BY content.contentID HAVING AVG(rating.rating) LIKE ?");
-            pstmt.setString(1, rating + "%");
 
-            ResultSet rs = pstmt.executeQuery();
-            try {
-                while (rs.next()) {
-                    tmp.SetContentID(rs.getInt("contentID"));
-                    tmp.SetTitle(rs.getString("title"));
-                    tmp.SetReleaseDate(rs.getString("content.releaseDate"));
-                    tmp.SetType(rs.getString("content.type"));
-                    tmp.SetaddedBy(rs.getString("addedBy"));
-                    tmp.SetRatingScore(avgRating(con, rs.getInt("content.contentID")));
-                    tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
-                    tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
-                    tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
-                    model.content.add(tmp);
-                }
-            } finally {
-                if (rs != null) rs.close();
-            }
-
-        } finally {
-            if (pstmt != null) pstmt.close();
-        }
-
-
-    }
 }

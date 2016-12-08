@@ -5,6 +5,7 @@ package Model;
  */
 public class genre {
     private String genre;
+    private String addedBy;
 
     public genre(String genre) {
         this.genre = genre;
@@ -13,6 +14,8 @@ public class genre {
     public String getGenre() {
         return genre;
     }
+
+    public String getAddedBy(){return addedBy;}
 
     public void setGenre(String genre) {
         this.genre = genre;
