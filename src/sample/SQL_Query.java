@@ -217,7 +217,7 @@ public class SQL_Query {
         PreparedStatement pstmt = null;
         try {
             content tmp = new content();
-            pstmt = con.prepareStatement("SELECT content.contentID,title, content.releaseDate,content.type FROM content, contentGenre,creator,CreatedContent,rating WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID  AND creator.name LIKE ? AND content.title LIKE ? AND contentGenre.genre LIKE ? GROUP BY contentID");
+            pstmt = con.prepareStatement("SELECT DISTINCT content.contentID,title, content.releaseDate,content.type FROM content, contentGenre,creator,CreatedContent,rating WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID  AND creator.name LIKE ? AND content.title LIKE ? AND contentGenre.genre LIKE ? GROUP BY contentID");
             pstmt.setString(1, "%" + name + "%");
             pstmt.setString(2, "%+" + genre + "%");
             pstmt.setString(3, "%" + title + "%");
@@ -228,6 +228,7 @@ public class SQL_Query {
                     tmp.SetTitle(rs.getString("title"));
                     tmp.SetReleaseDate(rs.getString("content.releaseDate"));
                     tmp.SetType(rs.getString("content.type"));
+                    tmp.SetaddedBy(rs.getString("content.addedBy"));
                     tmp.SetRatingScore(avgRating(con, rs.getInt("content.contentID")));
                     tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
                     tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
@@ -335,16 +336,18 @@ public class SQL_Query {
         PreparedStatement pstmt = null;
         try {
             content tmp = new content();
-            pstmt = con.prepareStatement("SELECT content.contentID,title, content.releaseDate,content.type FROM content, contentGenre,creator,CreatedContent,rating WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID  AND creator.name LIKE ? AND content.title LIKE ? AND contentGenre.genre LIKE ? GROUP BY contentID");
+            pstmt = con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate, content.type, content.addedBy, AVG(rating.rating) AS rating FROM content,rating WHERE content.contentID = rating.contentID GROUP BY content.contentID HAVING AVG(rating.rating) LIKE ?");
             pstmt.setString(1, rating + "%");
 
             ResultSet rs = pstmt.executeQuery();
             try {
-                while (rs.next()) {
-                    tmp.SetContentID(rs.getInt("content.contentID"));
+                while (rs.next())
+                {
+                    tmp.SetContentID(rs.getInt("contentID"));
                     tmp.SetTitle(rs.getString("title"));
                     tmp.SetReleaseDate(rs.getString("content.releaseDate"));
                     tmp.SetType(rs.getString("content.type"));
+                    tmp.SetaddedBy(rs.getString("addedBy"));
                     tmp.SetRatingScore(avgRating(con, rs.getInt("content.contentID")));
                     tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
                     tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
