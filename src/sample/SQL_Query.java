@@ -15,10 +15,10 @@ public class SQL_Query {
  void insertIntoReviews(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("INSER INTO review(userName,contentID,addedBY) VALUES(?,?,?)");
+            pstmt = con.prepareStatement("INSER INTO review(userName,contentID,review) VALUES(?,?,?,?)");
+            pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
             pstmt.setInt(1, content.getContentID());
             pstmt.setString(2, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getReview());
-            pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
             pstmt.executeUpdate();
         } finally {
             if (pstmt != null) pstmt.close();
@@ -191,7 +191,7 @@ public class SQL_Query {
 
     }
 
-    public ArrayList<genre> getGenres(Connection con, int contentID) throws Exception {
+    private ArrayList<genre> getGenres(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<genre> genres = new ArrayList<genre>();
         try {
@@ -212,7 +212,7 @@ public class SQL_Query {
         return genres;
     }
 
-    public String avgRating(Connection con, int contentID) throws Exception {
+    private String avgRating(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         String tmp;
         try {
@@ -231,7 +231,7 @@ public class SQL_Query {
         return tmp;
     }
 
-    public ArrayList<Creator> getCreators(Connection con, int contentID) throws Exception {
+    private ArrayList<Creator> getCreators(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<Creator> Creators = new ArrayList<>();
         Creator tmp = new Creator();
@@ -257,7 +257,7 @@ public class SQL_Query {
         return Creators;
     }
 
-    public ArrayList<review> getReviews(Connection con, int contentID) throws Exception {
+    private ArrayList<review> getReviews(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<review> reviews = new ArrayList<>();
         try {
