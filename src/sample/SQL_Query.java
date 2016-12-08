@@ -36,7 +36,7 @@ public class SQL_Query {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("");
-            //pstmt.setString(1, content.);
+            pstmt.setString(1, content.getObjectRating().getAddedBy());
             pstmt.setInt(2, content.getContentID());
             pstmt.setString(3, content.getRating());
             pstmt.executeUpdate();
@@ -341,8 +341,7 @@ public class SQL_Query {
 
             ResultSet rs = pstmt.executeQuery();
             try {
-                while (rs.next())
-                {
+                while (rs.next()) {
                     tmp.SetContentID(rs.getInt("contentID"));
                     tmp.SetTitle(rs.getString("title"));
                     tmp.SetReleaseDate(rs.getString("content.releaseDate"));
