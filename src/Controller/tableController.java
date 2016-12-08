@@ -41,8 +41,11 @@ public class tableController {
         TableColumn ratings = new TableColumn("Rating");
         ratings.setCellValueFactory(new PropertyValueFactory<content,String>("rating"));
 
+        TableColumn genres = new TableColumn("Genres");
+        genres.setCellValueFactory(new PropertyValueFactory<content, String>("genres"));
+
         tblView.setItems(data);
-        tblView.getColumns().addAll(Title, ReleaseDate, Type, ratings);
+        tblView.getColumns().addAll(Title, ReleaseDate, Type, ratings, genres);
 
 
         title.setText("Search Results");
