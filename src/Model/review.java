@@ -7,6 +7,7 @@ public class review {
 
     private String date;
     private String review;
+    private String addedBy;
 
     public review(String date, String review){
         this.date = date;
@@ -24,6 +25,7 @@ public class review {
     public String getReview(){
         return review;
     }
+    public String getAddedBy(){ return addedBy;}
 
     public void setDate(String date){this.date=date;}
 

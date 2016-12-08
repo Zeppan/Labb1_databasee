@@ -73,6 +73,8 @@ public class content {
         return tmp;
     }
 
+    public ArrayList<review> getReviewsArray(){return reviews;}
+
     public void SetTitle(String Title) {
         this.title = Title;
     }
@@ -97,6 +99,12 @@ public class content {
 
     public void Setgenres(ArrayList<genre> genres){
         this.genres.addAll(genres);
+    }
+    public void SetReviews(ArrayList<review> review){
+        this.reviews.addAll(review);
+    }
+    public void SetCreators(ArrayList<Creator> creators){
+        this.creators.addAll(creators);
     }
 
     public void addCreator(int creatorID, String name, String nationality, String role, String addedBy) {

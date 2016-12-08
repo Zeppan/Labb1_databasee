@@ -18,6 +18,7 @@ public class Creator {
         this.creatorID = creatorID;
         this.addedBy = addedBy;
     }
+    public Creator(){}
 
 
     public String getCreatorName(){
@@ -43,5 +44,6 @@ public class Creator {
     public void setCreatorID(int creatorID){this.creatorID=creatorID;}
 
     public void setRole(String role){this.role=role;}
+    public void setAddedBy(String addedBy){this.addedBy=addedBy;}
 
 }

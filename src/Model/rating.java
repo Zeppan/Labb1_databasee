@@ -7,12 +7,13 @@ public class rating {
 
     private String date;
     private int rating;
+    private String addedBy;
 
     public rating(String date, int rating){
         this.date = date;
         this.rating = rating;
     }
-
+    public String getAddedBy(){return addedBy;}
     public String getDate(){
         return date;
     }
