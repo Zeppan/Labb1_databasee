@@ -7,17 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Niclas on 2016-12-06.
@@ -30,8 +26,20 @@ public class tableController {
     private TableView<content> tblView;
     @FXML
     private Label title;
+    @FXML
+    private ChoiceBox<String> Rating;
 
     public void initialize(ArrayList<content> info){
+        Rating.getItems().add("1");
+        Rating.getItems().add("2");
+        Rating.getItems().add("3");
+        Rating.getItems().add("4");
+        Rating.getItems().add("5");
+        Rating.getItems().add("6");
+        Rating.getItems().add("7");
+        Rating.getItems().add("8");
+        Rating.getItems().add("9");
+        Rating.getItems().add("10");
         tblView.setEditable(true);
 
         ObservableList<content> data = FXCollections.observableArrayList(info);
@@ -67,16 +75,25 @@ public class tableController {
     }
 
     @FXML
-   private TextArea reviewTextByUser;
+    private TextArea reviewTextByUser;
     @FXML
     public void ReviewSelected(){
-        Date date = new Date();
 
         ObservableList<content> item;
         item = tblView.getSelectionModel().getSelectedItems();
-        String hej = reviewTextByUser.getText();
+        String reviewText = reviewTextByUser.getText();
+        item.get(0).addReview(reviewText);
 
-        item.get(0).addReview(date.toString(), hej);
+
+    }
+
+    @FXML
+    ChoiceBox<String> rating;
+    @FXML
+    public void rateContent(){
+        ObservableList<content> revs;
+        revs = tblView.getSelectionModel().getSelectedItems();
+        //revs.get(0).SetRatingScore(rating.getValue());
     }
 
     @FXML

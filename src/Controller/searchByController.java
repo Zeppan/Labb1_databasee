@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.content;
+import Model.rating;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,13 +36,11 @@ public class searchByController {
 
          */
 
-        tabl.add(new content(1, "Pingu!", "2003-02-01", "Movie", "7"));
-        tabl.add(new content(2, "Byggare Bob", "1834-01-01", "CD", "3"));
-
-        tabl.get(0).addReview("1337", "Denna film suger kuk");
-        tabl.get(0).addReview("1234", "10/10 would see again");
-        tabl.get(0).addReview("1993-03-01", "Denna film är inte att rekommendera....");
-        tabl.get(1).addReview("1234", "Denna film är bäst!");
+        tabl.add(new content(1, "Nalle Puh", "1993-05-14", "Movie", new rating("", "5")));
+        tabl.add(new content(1, "Donkey Kong", "1997-05-14", "Movie", new rating("", "7")));
+        tabl.add(new content(1, "Alladin", "1993-05-14", "CD", new rating("", "8")));
+        tabl.add(new content(1, "Pirates", "1993-05-14", "Movie", new rating("", "10")));
+        tabl.add(new content(1, "Hitz for Kidz", "1993-05-14", "Movie", new rating("", "2")));
 
         tableController table = fxmlLoader.<tableController>getController();
         table.initialize(tabl);
