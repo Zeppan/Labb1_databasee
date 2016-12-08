@@ -22,5 +22,7 @@ public class Model {
 
     }
 
-    public ArrayList<content> getContent(){return this.content;}
+    public ArrayList<content> getContent() {
+        return this.content;
+    }
 }

@@ -65,6 +65,10 @@ public class content {
         return rating.getRating();
     }
 
+    public rating getObjectRating() {
+        return this.rating;
+    }
+
     public String getReviews() {
         String tmp = "";
         for (review rev : reviews) {
@@ -73,7 +77,9 @@ public class content {
         return tmp;
     }
 
-    public ArrayList<review> getReviewsArray(){return reviews;}
+    public ArrayList<review> getReviewsArray() {
+        return reviews;
+    }
 
     public void SetTitle(String Title) {
         this.title = Title;
@@ -95,15 +101,19 @@ public class content {
         this.contentID = contentID;
     }
 
-    public void SetRatingScore( String rating){ this.rating.setRating(rating);}
+    public void SetRatingScore(String rating) {
+        this.rating.setRating(rating);
+    }
 
-    public void Setgenres(ArrayList<genre> genres){
+    public void Setgenres(ArrayList<genre> genres) {
         this.genres.addAll(genres);
     }
-    public void SetReviews(ArrayList<review> review){
+
+    public void SetReviews(ArrayList<review> review) {
         this.reviews.addAll(review);
     }
-    public void SetCreators(ArrayList<Creator> creators){
+
+    public void SetCreators(ArrayList<Creator> creators) {
         this.creators.addAll(creators);
     }
 
@@ -116,7 +126,7 @@ public class content {
     }
 
     public void addReview(String date, String review, String addedBy) {
-        reviews.add(new review(date, review,addedBy));
+        reviews.add(new review(date, review, addedBy));
     }
 
     public void addReview(String rev) {
