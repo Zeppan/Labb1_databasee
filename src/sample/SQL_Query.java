@@ -1,6 +1,7 @@
 package sample;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import Model.*;
 //import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
@@ -18,7 +19,20 @@ public class SQL_Query {
      * @param content
      * @throws SQLException
      */
-    public void insertIntoContent(Connection con, content content) throws SQLException {
+    public void insertIntoReviews (Connection con, content content, String review,String addedBy) throws Exception{
+        PreparedStatement pstmt = null;
+        try{
+            pstmt = con.prepareStatement("INSER INTO review(userName,contentID,addedBY) VALUES(?,?,?)");
+            pstmt.setInt(1,content.getContentID());
+            pstmt.setString(2,review);
+            pstmt.setString(3,addedBy);
+            pstmt.executeUpdate();
+        } finally {
+            if(pstmt != null) pstmt.close();
+        }
+
+    }
+    public void insertIntoContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSERT INTO content(title,releaseDate,type,addedBy) VALUES(?,?,?,?)", pstmt.RETURN_GENERATED_KEYS);
@@ -48,7 +62,7 @@ public class SQL_Query {
      * @param content
      * @throws SQLException
      */
-    public void insertIntoCreator(Connection con, content content) throws SQLException {
+    public void insertIntoCreator(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             for (Creator creator : content.getCreators()) {
@@ -82,7 +96,7 @@ public class SQL_Query {
      * @param content
      * @throws SQLException
      */
-    public void insertIntoCreatedContent(Connection con, content content) throws SQLException {
+    public void insertIntoCreatedContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSERT INTO CreatedContent VALUES(?,?)");
@@ -105,7 +119,7 @@ public class SQL_Query {
      * @param content
      * @throws SQLException
      */
-    public void insertIntoContentGenre(Connection con, content content) throws SQLException {
+    public void insertIntoContentGenre(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSERT INTO contentGenre VALUES(?,?)");
@@ -130,7 +144,7 @@ public class SQL_Query {
      * @param query
      * @throws SQLException
      */
-    public void SelectQuery(Connection con, String query) throws SQLException {
+    public void SelectQuery(Connection con, String query) throws Exception {
 
 
         Statement stmt = null;
@@ -162,13 +176,13 @@ public class SQL_Query {
         }
     }
 
-    public void getContent(Connection con, Model model, String query) throws SQLException {
+    public void getContent(Connection con, Model model, String query) throws Exception {
 
 
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery(query);
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 content tmp = new content();
                 tmp.SetContentID(rs.getInt("contentID"));
@@ -185,9 +199,7 @@ public class SQL_Query {
         }
     }
 
-    public void getcontentReviews(Connection con, Model model, String title) throws SQLException {
-
-
+    public void getContentReviews(Connection con, Model model, String title) throws Exception {
         PreparedStatement pstmt = null;
         try {
             content tmp = new content();
@@ -203,11 +215,81 @@ public class SQL_Query {
             }
             model.content.add(tmp);
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
+            if (pstmt != null) pstmt.close();
         }
     }
 
 
+    public void search(Connection con, Model model, String name, String genre, String title, String rating) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            content tmp = new content();
+            pstmt = con.prepareStatement("SELECT content.contentID,title, content.releaseDate,content.type FROM content, contentGenre,creator,CreatedContent,rating WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID AND content.contentID = rating.contentID AND creator.name LIKE ? AND content.title LIKE ? AND contentGenre.genre LIKE ? AND  rating.rating LIKE ? GROUP BY contentID");
+            pstmt.setString(1, "%" + name + "%");
+            pstmt.setString(2, "%+" + genre + "%");
+            pstmt.setString(3, "%" + title + "%");
+            pstmt.setString(4, "%" + rating + "%");
+            ResultSet rs = pstmt.executeQuery();
+            try {
+                while (rs.next()) {
+                    tmp.SetContentID(rs.getInt("content.contentID"));
+                    tmp.SetTitle(rs.getString("title"));
+                    tmp.SetReleaseDate(rs.getString("content.releaseDate"));
+                    tmp.SetType(rs.getString("content.type"));
+                    tmp.SetRating(avgRating(con,rs.getInt("content.contentID")));
+                    tmp.Setgenres(getGenres(con,rs.getInt("content.contentID")));
+                    model.content.add(tmp);
+                }
+            } finally {
+                if (rs != null) rs.close();
+            }
+
+        } finally {
+            if (pstmt != null) pstmt.close();
+        }
+
+    }
+
+    public ArrayList<genre> getGenres(Connection con, int contentID) throws Exception {
+        PreparedStatement pstmt = null;
+        ArrayList<genre> genres = new ArrayList<genre>();
+        try {
+            pstmt = con.prepareStatement("SELECT * FROM contentGenre WHERE contentID = ?");
+            pstmt.setInt(1, contentID);
+            ResultSet rs = pstmt.executeQuery();
+            try {
+                while (rs.next()) {
+                    genres.add(new genre(rs.getString("genre")));
+                }
+
+            } finally {
+                if (rs != null) rs.close();
+            }
+        } finally {
+            if (pstmt != null) pstmt.close();
+        }
+        return genres;
+    }
+
+    public String avgRating(Connection con, int contentID) throws Exception {
+        PreparedStatement pstmt = null;
+        String tmp;
+        try {
+            pstmt = con.prepareStatement("SELECT contentID, AVG(rating) AS rating FROM rating WHERE contentID = ?");
+            pstmt.setInt(1, contentID);
+            ResultSet rs = pstmt.executeQuery();
+            try {
+                rs.next();
+                tmp = rs.getString("rating");
+            } finally {
+                if (rs != null) rs.close();
+            }
+        } finally {
+            if (pstmt != null) pstmt.close();
+        }
+        return tmp;
+
+
+    }
 }
+
