@@ -7,6 +7,11 @@ public class genre {
     private String genre;
     private String addedBy;
 
+    public genre(String genre, String addedBy){
+        this.genre = genre;
+        this.addedBy = addedBy;
+    }
+
     public genre(String genre) {
         this.genre = genre;
     }

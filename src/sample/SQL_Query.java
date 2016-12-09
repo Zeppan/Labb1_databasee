@@ -186,23 +186,24 @@ public class SQL_Query implements SQL_Query_IF {
         con.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
-            content tmp = new content();
-            pstmt = con.prepareStatement("SELECT DISTINCT content.contentID,title, content.releaseDate,content.type FROM content, contentGenre,creator,CreatedContent,rating WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID  AND creator.name LIKE ? AND content.title LIKE ? AND contentGenre.genre LIKE ? GROUP BY contentID");
+
+            pstmt = con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate,content.type,content.addedBy FROM content, contentGenre,creator,CreatedContent WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID AND creator.creatorID =createdcontent.creatorID AND creator.name LIKE ? AND contentgenre.genre LIKE ? AND content.title LIKE ?");
             pstmt.setString(1, "%" + name + "%");
-            pstmt.setString(2, "%+" + genre + "%");
+            pstmt.setString(2, "%" + genre + "%");
             pstmt.setString(3, "%" + title + "%");
             ResultSet rs = pstmt.executeQuery();
             try {
                 while (rs.next()) {
-                    tmp.SetContentID(rs.getInt("content.contentID"));
+                    content tmp = new content();
+                    tmp.SetContentID(rs.getInt("contentID"));
                     tmp.SetTitle(rs.getString("title"));
-                    tmp.SetReleaseDate(rs.getString("content.releaseDate"));
-                    tmp.SetType(rs.getString("content.type"));
-                    tmp.SetaddedBy(rs.getString("content.addedBy"));
-                    tmp.SetRatingScore(avgRating(con, rs.getInt("content.contentID")));
-                    tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
-                    tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
-                    tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
+                    tmp.SetReleaseDate(rs.getString("releaseDate"));
+                    tmp.SetType(rs.getString("type"));
+                    tmp.SetaddedBy(rs.getString("addedBy"));
+                    tmp.SetRatingScore(avgRating(con, rs.getInt("contentID")));
+                    tmp.Setgenres(getGenres(con, rs.getInt("contentID")));
+                    tmp.SetCreators(getCreators(con, rs.getInt("contentID")));
+                    tmp.SetReviews(getReviews(con, rs.getInt("contentID")));
                     tmparr.add(tmp);
                     con.commit();
                 }
@@ -236,13 +237,13 @@ public class SQL_Query implements SQL_Query_IF {
                 while (rs.next()) {
                     tmp.SetContentID(rs.getInt("contentID"));
                     tmp.SetTitle(rs.getString("title"));
-                    tmp.SetReleaseDate(rs.getString("content.releaseDate"));
-                    tmp.SetType(rs.getString("content.type"));
+                    tmp.SetReleaseDate(rs.getString("releaseDate"));
+                    tmp.SetType(rs.getString("type"));
                     tmp.SetaddedBy(rs.getString("addedBy"));
-                    tmp.SetRatingScore(avgRating(con, rs.getInt("content.contentID")));
-                    tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
-                    tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
-                    tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
+                    tmp.SetRatingScore(avgRating(con, rs.getInt("contentID")));
+                    tmp.Setgenres(getGenres(con, rs.getInt("contentID")));
+                    tmp.SetCreators(getCreators(con, rs.getInt("contentID")));
+                    tmp.SetReviews(getReviews(con, rs.getInt("contentID")));
                     tmparr.add(tmp);
                 }
             } finally {
@@ -294,13 +295,22 @@ public class SQL_Query implements SQL_Query_IF {
             try {
                 rs.next();
                 tmp = rs.getString("rating");
+                System.out.println(tmp);
             } finally {
                 if (rs != null) rs.close();
             }
         } finally {
             if (pstmt != null) pstmt.close();
         }
-        return tmp;
+        if (tmp !=null) {
+            System.out.println("hej");
+            return tmp;
+        } else {
+            System.out.println("fuck");
+            tmp = "no rating";
+            return tmp;
+        }
+
     }
 
 
@@ -309,7 +319,7 @@ public class SQL_Query implements SQL_Query_IF {
         ArrayList<Creator> Creators = new ArrayList<>();
         Creator tmp = new Creator();
         try {
-            pstmt = con.prepareStatement("SELECT * FROM creator WHERE creatorID = (SELECT creatorID FROM CreatedContent WHERE contentID = ?)");
+            pstmt = con.prepareStatement("SELECT * FROM creator,createdcontent WHERE creator.creatorID = createdcontent.creatorID AND createdcontent.contentID = ?");
             pstmt.setInt(1, contentID);
             ResultSet rs = pstmt.executeQuery();
             try {

@@ -30,6 +30,12 @@ public class tableController {
     private ChoiceBox<String> Rating;
 
     public void initialize(ArrayList<content> info){
+
+        for(content content : info){
+            content.setGenresString();
+            //System.out.println(content.getShit());
+        }
+
         Rating.getItems().add("1");
         Rating.getItems().add("2");
         Rating.getItems().add("3");
@@ -40,9 +46,11 @@ public class tableController {
         Rating.getItems().add("8");
         Rating.getItems().add("9");
         Rating.getItems().add("10");
+
         tblView.setEditable(true);
 
         ObservableList<content> data = FXCollections.observableArrayList(info);
+        ObservableList<genre> genre = FXCollections.observableArrayList(info.get(0).getGenres());
 
 
         TableColumn Title = new TableColumn("Title");
@@ -58,9 +66,10 @@ public class tableController {
         ratings.setCellValueFactory(new PropertyValueFactory<content,String>("rating"));
 
         TableColumn genres = new TableColumn("Genres");
-        genres.setCellValueFactory(new PropertyValueFactory<content, String>("genres"));
+        genres.setCellValueFactory(new PropertyValueFactory<content, String>("genreString"));
 
         tblView.setItems(data);
+        //tblView.setItems(genre);
         tblView.getColumns().addAll(Title, ReleaseDate, Type, ratings, genres);
 
 
@@ -78,13 +87,11 @@ public class tableController {
     private TextArea reviewTextByUser;
     @FXML
     public void ReviewSelected(){
-
-        ObservableList<content> item;
-        item = tblView.getSelectionModel().getSelectedItems();
-        String reviewText = reviewTextByUser.getText();
-        item.get(0).addReview(reviewText);
-        content cnt = item.get(0);
-
+            ObservableList<content> item;
+            item = tblView.getSelectionModel().getSelectedItems();
+            String reviewText = reviewTextByUser.getText();
+            item.get(0).addReview(reviewText);
+            content cnt = item.get(0);
     }
 
     @FXML

@@ -1,11 +1,15 @@
 package Controller;
 
+import Model.Creator;
+import Model.content;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import Model.*;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import sample.SQL_Query;
 
 import java.util.ArrayList;
 
@@ -70,18 +74,28 @@ public class addController{
     private DatePicker date;
 
     @FXML
-    public void getInformation(){
+    public void getInformation() throws Exception {
     //This function will get the information from the media
+        SQL_Query sql = new SQL_Query();
+
+        ArrayList<Creator> creatorTmp = new ArrayList<>();
         for(int i = 0; i < creators.size(); i++){
-            System.out.print(creators.get(i).getText()+"");
-            System.out.print(nationalities.get(i).getText()+"");
-            System.out.println(jobs.get(i).getText()+"");
+            creatorTmp.add(new Creator());
+            creatorTmp.get(i).setCreatorName(creators.get(i).getText());
+            creatorTmp.get(i).setNationality(nationalities.get(i).getText());
+            creatorTmp.get(i).setRole(jobs.get(i).getText());
+            creatorTmp.get(i).setAddedBy(Controller.usernameLoggedIn);
         }
 
-        System.out.println(contentTitle.getText());
-        System.out.println(genre.getText());
-        System.out.println(date.getValue());
+        content contentTmp = new content();
+        contentTmp.SetCreators(creatorTmp);
+        contentTmp.setGenre(genre.getText(), Controller.usernameLoggedIn);
 
+        contentTmp.SetTitle(contentTitle.getText());
+        contentTmp.SetType(contentType.getValue());
+        contentTmp.SetReleaseDate(date.getValue().toString());
+        contentTmp.SetaddedBy(Controller.usernameLoggedIn);
 
+        sql.insert(Controller.con, contentTmp);
     }
 }

@@ -9,12 +9,13 @@ public class rating {
     private String rating;
     private String addedBy;
 
-    public rating(String date, String rating) {
-        this.date = date;
+    public rating(String rating,String addedBy) {
+        this.addedBy = addedBy;
         this.rating = rating;
     }
 
-    public rating() {
+    public rating(String rating) {
+        this.rating = rating;
     }
 
     public void setRating(String rating) {

@@ -15,6 +15,7 @@ public class content {
     private ArrayList<Creator> creators;
     private ArrayList<genre> genres;
     private ArrayList<review> reviews;
+    private String genreString;
 
     public content(int contentID, String title, String releaseDate, String type, rating rating) {
         creators = new ArrayList<>();
@@ -32,6 +33,8 @@ public class content {
         genres = new ArrayList<>();
         reviews = new ArrayList<>();
     }
+
+    public String getGenreString(){return genreString;}
 
     public ArrayList<genre> getGenres() {
         return genres;
@@ -77,6 +80,14 @@ public class content {
         return tmp;
     }
 
+    public void setGenresString() {
+        String tmp = "";
+        for (genre gen : genres) {
+            tmp += gen.getGenre() + ", ";
+        }
+        this.genreString = tmp;
+    }
+
     public ArrayList<review> getReviewsArray() {
         return reviews;
     }
@@ -102,11 +113,11 @@ public class content {
     }
 
     public void SetRatingScore(String rating) {
-        this.rating.setRating(rating);
+        this.rating = new rating(rating);
     }
 
     public void Setgenres(ArrayList<genre> genres) {
-        this.genres.addAll(genres);
+        this.genres =genres;
     }
 
     public void SetReviews(ArrayList<review> review) {
@@ -121,8 +132,8 @@ public class content {
         creators.add(new Creator(creatorID, name, nationality, role, addedBy));
     }
 
-    public void setGenre(String genr) {
-        genres.add(new genre(genr));
+    public void setGenre(String genr, String addedBy) {
+        genres.add(new genre(genr, addedBy));
     }
 
     public void addReview(String date, String review, String addedBy) {

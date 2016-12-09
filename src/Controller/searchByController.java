@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.SQL_Query;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,29 +22,25 @@ public class searchByController {
 
 
     @FXML
-    public void searchBy(ActionEvent e) throws IOException {
+    private TextField name, genre, title;
+    @FXML
+    public void searchBy(ActionEvent e) throws Exception {
+        SQL_Query sql = new SQL_Query();
+
+        String searchName = name.getText(), searchGenre = genre.getText(), searchTitle = title.getText();
+
+        //Thread
+        ArrayList<content> table = sql.search(Controller.con, searchName, searchGenre, searchTitle);
+        System.out.println(table);
+
         Stage media = new Stage();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
         Parent root = fxmlLoader.load();
 
-        ArrayList<content> tabl = new ArrayList<>();
-
-        /*
-
-            Query här och sätt in värdena in i tabl array listan.
-
-         */
-
-        tabl.add(new content(1, "Nalle Puh", "1993-05-14", "Movie", new rating("", "5")));
-        tabl.add(new content(1, "Donkey Kong", "1997-05-14", "Movie", new rating("", "7")));
-        tabl.add(new content(1, "Alladin", "1993-05-14", "CD", new rating("", "8")));
-        tabl.add(new content(1, "Pirates", "1993-05-14", "Movie", new rating("", "10")));
-        tabl.add(new content(1, "Hitz for Kidz", "1993-05-14", "Movie", new rating("", "2")));
-
-        tableController table = fxmlLoader.<tableController>getController();
-        table.initialize(tabl);
-        table.setArrayList(tabl);
+        tableController tbl = fxmlLoader.<tableController>getController();
+        tbl.initialize(table);
+        tbl.setArrayList(table);
         media.setScene(new Scene(root));
         media.show();
     }

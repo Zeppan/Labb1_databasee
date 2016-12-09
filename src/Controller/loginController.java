@@ -55,6 +55,7 @@ public class loginController {
         Parent root = fxmlLoader.load();
         mainStageController main = fxmlLoader.<mainStageController>getController();
         main.initialize(username);
+        System.out.println(username);
         mainStage.setScene(new Scene(root));
         mainStage.show();
     }

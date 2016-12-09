@@ -29,12 +29,12 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label text="Rating:">
+                  <Label text="Title:">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label text="Title:">
+                  <Label text="Rating:">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -45,8 +45,8 @@
                <children>
                   <TextField fx:id="name" />
                   <TextField fx:id="genre" />
-                  <TextField fx:id="rating" />
                   <TextField fx:id="title" />
+                  <TextField fx:id="rating" />
                </children>
             </VBox>
          </children>
