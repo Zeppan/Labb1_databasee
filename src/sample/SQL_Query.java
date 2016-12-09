@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import Model.*;
-//import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+
 
 /**
  * Created by Glantz on 2016-12-06.
@@ -313,7 +313,7 @@ public class SQL_Query implements SQL_Query_IF {
         return Creators;
     }
 
-    
+
     private ArrayList<review> getReviews(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<review> reviews = new ArrayList<>();
