@@ -18,8 +18,32 @@ public class Controller implements Runnable {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-            con = DriverManager.getConnection(server, username, password);
+            con = DriverManager.getConnection(server, "root", "glantz");
             System.out.println("connected!");
+            PreparedStatement pstmt = null;
+            try {
+                pstmt = con.prepareStatement("SELECT * FROM user WHERE userName_email =? AND password = Password(?)");
+                pstmt.setString(1, username);
+                pstmt.setString(2, password);
+                pstmt.executeUpdate();
+                ResultSet rs = pstmt.getGeneratedKeys();
+                try {
+                    if (rs.next()) {
+                        if (rs.getInt(1) == 1) {
+
+                        } else {
+                            System.out.println(" GFUS");
+                        }
+                    }
+                } finally {
+                    if (rs != null) rs.close();
+                }
+                pstmt.close();
+            } finally {
+                if (pstmt != null) pstmt.close();
+
+
+            }
 
             // TEST STATEMENTS
             // ****************************
