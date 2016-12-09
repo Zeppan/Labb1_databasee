@@ -45,10 +45,28 @@ public class searchByController {
         media.show();
     }
 
-
     @FXML
-    public void searchByRating(ActionEvent e){
+    private TextField rating;
+    @FXML
+    public void searchByRating(ActionEvent e) throws Exception {
+        SQL_Query sql = new SQL_Query();
 
+        String ratings = rating.getText();
+
+        //Thread
+        ArrayList<content> table = sql.searchRating(Controller.con, ratings);
+        System.out.println(table);
+
+        Stage media = new Stage();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
+        Parent root = fxmlLoader.load();
+
+        tableController tbl = fxmlLoader.<tableController>getController();
+        tbl.initialize(table);
+        tbl.setArrayList(table);
+        media.setScene(new Scene(root));
+        media.show();
     }
 
 

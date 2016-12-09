@@ -50,7 +50,7 @@ public class tableController {
         tblView.setEditable(true);
 
         ObservableList<content> data = FXCollections.observableArrayList(info);
-        ObservableList<genre> genre = FXCollections.observableArrayList(info.get(0).getGenres());
+       // ObservableList<genre> genre = FXCollections.observableArrayList(info.get(0).getGenres());
 
 
         TableColumn Title = new TableColumn("Title");

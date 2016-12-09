@@ -18,7 +18,7 @@ public class Controller implements Runnable {
         con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(server, "root", "root");
+            con = DriverManager.getConnection(server, "root", "glantz");
             System.out.println("connected!");
 
             return sql.loggin(con, username, password);
