@@ -11,10 +11,8 @@ import Model.*;
  */
 public class SQL_Query implements SQL_Query_IF {
 
-
-
-
-   public void insert(Connection con,content content) throws Exception{
+    @Override
+    public void insert(Connection con, content content) throws Exception {
         con.setAutoCommit(false);
         try {
             insertIntoContent(con, content);
@@ -22,17 +20,17 @@ public class SQL_Query implements SQL_Query_IF {
             insertIntoCreatedContent(con, content);
             insertIntoContentGenre(con, content);
             con.commit();
-        } catch(Exception e){
+        } catch (Exception e) {
             con.rollback();
             e.getMessage();
             throw e;
-        }finally {
+        } finally {
             con.setAutoCommit(true);
         }
-  }
+    }
 
     @Override
- public void insertIntoReviews(Connection con, content content) throws Exception {
+    public void insertIntoReviews(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSER INTO review(userName,contentID,addedBY) VALUES(?,?,?)");
@@ -40,11 +38,10 @@ public class SQL_Query implements SQL_Query_IF {
             pstmt.setString(2, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getReview());
             pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
             pstmt.executeUpdate();
-        } catch(Exception e){
+        } catch (Exception e) {
             e.getMessage();
             throw e;
-        }
-        finally {
+        } finally {
             if (pstmt != null) pstmt.close();
         }
     }
@@ -58,12 +55,10 @@ public class SQL_Query implements SQL_Query_IF {
             pstmt.setInt(2, content.getContentID());
             pstmt.setString(3, content.getRating());
             pstmt.executeUpdate();
-        } catch(Exception e){
+        } catch (Exception e) {
             e.getMessage();
             throw e;
-        }
-
-        finally {
+        } finally {
             if (pstmt != null) pstmt.close();
         }
     }
@@ -91,7 +86,6 @@ public class SQL_Query implements SQL_Query_IF {
             if (pstmt != null) pstmt.close();
         }
     }
-
 
 
     private void insertIntoCreator(Connection con, content content) throws Exception {
@@ -122,7 +116,6 @@ public class SQL_Query implements SQL_Query_IF {
     }
 
 
-
     private void insertIntoCreatedContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -138,7 +131,6 @@ public class SQL_Query implements SQL_Query_IF {
             if (pstmt != null) pstmt.close();
         }
     }
-
 
 
     private void insertIntoContentGenre(Connection con, content content) throws Exception {
@@ -163,8 +155,8 @@ public class SQL_Query implements SQL_Query_IF {
 
     @Override
     public void search(Connection con, Model model, String name, String genre, String title) throws Exception {
-       con.setAutoCommit(false);
-       PreparedStatement pstmt = null;
+        con.setAutoCommit(false);
+        PreparedStatement pstmt = null;
         try {
             content tmp = new content();
             pstmt = con.prepareStatement("SELECT DISTINCT content.contentID,title, content.releaseDate,content.type FROM content, contentGenre,creator,CreatedContent,rating WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID  AND creator.name LIKE ? AND content.title LIKE ? AND contentGenre.genre LIKE ? GROUP BY contentID");
@@ -190,12 +182,11 @@ public class SQL_Query implements SQL_Query_IF {
                 if (rs != null) rs.close();
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             con.rollback();
             e.getMessage();
             throw e;
-        }
-        finally {
+        } finally {
             con.setAutoCommit(true);
             if (pstmt != null) pstmt.close();
         }
@@ -230,13 +221,11 @@ public class SQL_Query implements SQL_Query_IF {
                 if (rs != null) rs.close();
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             con.rollback();
             e.getMessage();
             throw e;
-        }
-
-        finally {
+        } finally {
             con.setAutoCommit(true);
             if (pstmt != null) pstmt.close();
         }
