@@ -33,7 +33,6 @@ public class tableController {
 
         for(content content : info){
             content.setGenresString();
-            //System.out.println(content.getShit());
         }
 
         Rating.getItems().add("1");
@@ -50,7 +49,7 @@ public class tableController {
         tblView.setEditable(true);
 
         ObservableList<content> data = FXCollections.observableArrayList(info);
-       // ObservableList<genre> genre = FXCollections.observableArrayList(info.get(0).getGenres());
+
 
 
         TableColumn Title = new TableColumn("Title");
@@ -69,7 +68,6 @@ public class tableController {
         genres.setCellValueFactory(new PropertyValueFactory<content, String>("genreString"));
 
         tblView.setItems(data);
-        //tblView.setItems(genre);
         tblView.getColumns().addAll(Title, ReleaseDate, Type, ratings, genres);
 
 
