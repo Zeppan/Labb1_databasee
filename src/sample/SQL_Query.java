@@ -10,6 +10,33 @@ import Model.*;
  * Created by Glantz on 2016-12-06.
  */
 public class SQL_Query implements SQL_Query_IF {
+    @Override
+    public Boolean loggin(Connection con, String username, String password) throws Exception {
+
+        PreparedStatement pstmt = null;
+        try {
+
+            pstmt = con.prepareStatement("SELECT COUNT(*) FROM user WHERE userName_email = ? AND password = Password(?)");
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+            try {
+                if (rs.next()) {
+                    if (rs.getInt(1) == 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } finally {
+                if (rs != null) rs.close();
+            }
+            pstmt.close();
+        } finally {
+            if (pstmt != null) pstmt.close();
+        }
+        return false;
+    }
 
     @Override
     public void insert(Connection con, content content) throws Exception {
@@ -154,7 +181,7 @@ public class SQL_Query implements SQL_Query_IF {
 
 
     @Override
-    public ArrayList<content> search(Connection con, Model model, String name, String genre, String title) throws Exception {
+    public ArrayList<content> search(Connection con, String name, String genre, String title) throws Exception {
         ArrayList<content> tmparr = new ArrayList<>();
         con.setAutoCommit(false);
         PreparedStatement pstmt = null;
@@ -195,7 +222,7 @@ public class SQL_Query implements SQL_Query_IF {
     }
 
     @Override
-    public ArrayList<content> searchRating(Connection con, Model model, String rating) throws Exception {
+    public ArrayList<content> searchRating(Connection con, String rating) throws Exception {
         ArrayList<content> tmparr = new ArrayList<>();
         con.setAutoCommit(false);
         PreparedStatement pstmt = null;
