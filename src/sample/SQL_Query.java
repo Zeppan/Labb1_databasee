@@ -12,7 +12,27 @@ import Model.*;
 public class SQL_Query implements SQL_Query_IF {
 
 
- void insertIntoReviews(Connection con, content content) throws Exception {
+
+
+   public void insert(Connection con,content content) throws Exception{
+        con.setAutoCommit(false);
+        try {
+            insertIntoContent(con, content);
+            insertIntoCreator(con, content);
+            insertIntoCreatedContent(con, content);
+            insertIntoContentGenre(con, content);
+            con.commit();
+        } catch(Exception e){
+            con.rollback();
+            e.getMessage();
+            throw e;
+        }finally {
+            con.setAutoCommit(true);
+        }
+  }
+
+    @Override
+ public void insertIntoReviews(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSER INTO review(userName,contentID,addedBY) VALUES(?,?,?)");
@@ -20,7 +40,11 @@ public class SQL_Query implements SQL_Query_IF {
             pstmt.setString(2, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getReview());
             pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
             pstmt.executeUpdate();
-        } finally {
+        } catch(Exception e){
+            e.getMessage();
+            throw e;
+        }
+        finally {
             if (pstmt != null) pstmt.close();
         }
     }
@@ -34,13 +58,18 @@ public class SQL_Query implements SQL_Query_IF {
             pstmt.setInt(2, content.getContentID());
             pstmt.setString(3, content.getRating());
             pstmt.executeUpdate();
-        } finally {
+        } catch(Exception e){
+            e.getMessage();
+            throw e;
+        }
+
+        finally {
             if (pstmt != null) pstmt.close();
         }
     }
 
-    @Override
-    public void insertIntoContent(Connection con, content content) throws Exception {
+
+    private void insertIntoContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSERT INTO content(title,releaseDate,type,addedBy) VALUES(?,?,?,?)", pstmt.RETURN_GENERATED_KEYS);
@@ -64,8 +93,8 @@ public class SQL_Query implements SQL_Query_IF {
     }
 
 
-    @Override
-    public void insertIntoCreator(Connection con, content content) throws Exception {
+
+    private void insertIntoCreator(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             for (Creator creator : content.getCreators()) {
@@ -93,8 +122,8 @@ public class SQL_Query implements SQL_Query_IF {
     }
 
 
-    @Override
-    public void insertIntoCreatedContent(Connection con, content content) throws Exception {
+
+    private void insertIntoCreatedContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSERT INTO CreatedContent VALUES(?,?)");
@@ -111,8 +140,8 @@ public class SQL_Query implements SQL_Query_IF {
     }
 
 
-    @Override
-    public void insertIntoContentGenre(Connection con, content content) throws Exception {
+
+    private void insertIntoContentGenre(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             pstmt = con.prepareStatement("INSERT INTO contentGenre VALUES(?,?,?)");
@@ -134,7 +163,8 @@ public class SQL_Query implements SQL_Query_IF {
 
     @Override
     public void search(Connection con, Model model, String name, String genre, String title) throws Exception {
-        PreparedStatement pstmt = null;
+       con.setAutoCommit(false);
+       PreparedStatement pstmt = null;
         try {
             content tmp = new content();
             pstmt = con.prepareStatement("SELECT DISTINCT content.contentID,title, content.releaseDate,content.type FROM content, contentGenre,creator,CreatedContent,rating WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID  AND creator.name LIKE ? AND content.title LIKE ? AND contentGenre.genre LIKE ? GROUP BY contentID");
@@ -154,12 +184,19 @@ public class SQL_Query implements SQL_Query_IF {
                     tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
                     tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
                     model.content.add(tmp);
+                    con.commit();
                 }
             } finally {
                 if (rs != null) rs.close();
             }
 
-        } finally {
+        } catch (Exception e){
+            con.rollback();
+            e.getMessage();
+            throw e;
+        }
+        finally {
+            con.setAutoCommit(true);
             if (pstmt != null) pstmt.close();
         }
 
@@ -167,6 +204,8 @@ public class SQL_Query implements SQL_Query_IF {
 
     @Override
     public void searchRating(Connection con, Model model, String rating) throws Exception {
+
+        con.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
             content tmp = new content();
@@ -191,15 +230,22 @@ public class SQL_Query implements SQL_Query_IF {
                 if (rs != null) rs.close();
             }
 
-        } finally {
+        } catch (Exception e){
+            con.rollback();
+            e.getMessage();
+            throw e;
+        }
+
+        finally {
+            con.setAutoCommit(true);
             if (pstmt != null) pstmt.close();
         }
 
 
     }
 
-    @Override
-    public ArrayList<genre> getGenres(Connection con, int contentID) throws Exception {
+
+    private ArrayList<genre> getGenres(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<genre> genres = new ArrayList<genre>();
         try {
@@ -220,8 +266,8 @@ public class SQL_Query implements SQL_Query_IF {
         return genres;
     }
 
-    @Override
-    public String avgRating(Connection con, int contentID) throws Exception {
+
+    private String avgRating(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         String tmp;
         try {
@@ -240,8 +286,8 @@ public class SQL_Query implements SQL_Query_IF {
         return tmp;
     }
 
-    @Override
-    public ArrayList<Creator> getCreators(Connection con, int contentID) throws Exception {
+
+    private ArrayList<Creator> getCreators(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<Creator> Creators = new ArrayList<>();
         Creator tmp = new Creator();
@@ -267,8 +313,8 @@ public class SQL_Query implements SQL_Query_IF {
         return Creators;
     }
 
-    @Override
-    public ArrayList<review> getReviews(Connection con, int contentID) throws Exception {
+    
+    private ArrayList<review> getReviews(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<review> reviews = new ArrayList<>();
         try {
