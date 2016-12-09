@@ -52,6 +52,6 @@
          </children>
       </HBox>
       <Button layoutX="285.0" layoutY="100.0" mnemonicParsing="false" onAction="#searchBy" prefHeight="75.0" prefWidth="52.0" text="Go!" />
-      <Button layoutX="285.0" layoutY="175.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Go!" />
+      <Button layoutX="285.0" layoutY="175.0" mnemonicParsing="false" onAction="#searchByRating" prefHeight="25.0" prefWidth="52.0" text="Go!" />
    </children>
 </AnchorPane>
