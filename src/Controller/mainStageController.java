@@ -12,6 +12,12 @@ import javafx.stage.Stage;
  */
 public class mainStageController {
 
+    private String user;
+
+    public void initialize(String user){
+        this.user = user;
+    }
+
     @FXML
     public void showSearch(ActionEvent e) throws Exception{
         Stage TableView = new Stage();

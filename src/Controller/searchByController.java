@@ -24,8 +24,6 @@ public class searchByController {
         Stage media = new Stage();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
-
-
         Parent root = fxmlLoader.load();
 
         ArrayList<content> tabl = new ArrayList<>();
