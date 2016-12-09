@@ -154,7 +154,8 @@ public class SQL_Query implements SQL_Query_IF {
 
 
     @Override
-    public void search(Connection con, Model model, String name, String genre, String title) throws Exception {
+    public ArrayList<content> search(Connection con, Model model, String name, String genre, String title) throws Exception {
+        ArrayList<content> tmparr = new ArrayList<>();
         con.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
@@ -175,7 +176,7 @@ public class SQL_Query implements SQL_Query_IF {
                     tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
                     tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
                     tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
-                    model.content.add(tmp);
+                    tmparr.add(tmp);
                     con.commit();
                 }
             } finally {
@@ -190,12 +191,12 @@ public class SQL_Query implements SQL_Query_IF {
             con.setAutoCommit(true);
             if (pstmt != null) pstmt.close();
         }
-
+        return tmparr;
     }
 
     @Override
-    public void searchRating(Connection con, Model model, String rating) throws Exception {
-
+    public ArrayList<content> searchRating(Connection con, Model model, String rating) throws Exception {
+        ArrayList<content> tmparr = new ArrayList<>();
         con.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
@@ -215,7 +216,7 @@ public class SQL_Query implements SQL_Query_IF {
                     tmp.Setgenres(getGenres(con, rs.getInt("content.contentID")));
                     tmp.SetCreators(getCreators(con, rs.getInt("content.contentID")));
                     tmp.SetReviews(getReviews(con, rs.getInt("content.contentID")));
-                    model.content.add(tmp);
+                    tmparr.add(tmp);
                 }
             } finally {
                 if (rs != null) rs.close();
@@ -229,7 +230,7 @@ public class SQL_Query implements SQL_Query_IF {
             con.setAutoCommit(true);
             if (pstmt != null) pstmt.close();
         }
-
+        return tmparr;
 
     }
 

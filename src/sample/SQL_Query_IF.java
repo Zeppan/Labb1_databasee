@@ -2,7 +2,7 @@ package sample;
 
 import Model.*;
 import java.sql.Connection;
-
+import java.util.ArrayList;
 
 
 /**
@@ -16,9 +16,9 @@ public interface SQL_Query_IF {
 
     void insertIntoReviews(Connection con, content content) throws Exception;
 
-    void search(Connection con, Model model, String name, String genre, String title) throws Exception;
+    ArrayList<content> search(Connection con, Model model, String name, String genre, String title) throws Exception;
 
-    void searchRating(Connection con, Model model, String rating) throws Exception;
+    ArrayList<content> searchRating(Connection con, Model model, String rating) throws Exception;
 
 
 }
