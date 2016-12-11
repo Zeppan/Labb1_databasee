@@ -5,7 +5,7 @@ import Model.content;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import Model.*;
+
 
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
