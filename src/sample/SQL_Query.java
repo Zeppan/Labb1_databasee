@@ -10,8 +10,9 @@ import Model.*;
  * Created by Glantz on 2016-12-06.
  */
 public class SQL_Query implements SQL_Query_IF {
+
     @Override
-    public Boolean loggin(Connection con, String username, String password) throws Exception {
+    public Boolean login(Connection con, String username, String password) throws Exception {
 
         PreparedStatement pstmt = null;
         try {
@@ -60,10 +61,11 @@ public class SQL_Query implements SQL_Query_IF {
     public void insertIntoReviews(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("INSER INTO review(userName,contentID,addedBY) VALUES(?,?,?)");
-            pstmt.setInt(1, content.getContentID());
-            pstmt.setString(2, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getReview());
-            pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
+            pstmt = con.prepareStatement("INSERT INTO review(userName,contentID,review) VALUES(?,?,?)");
+            pstmt.setString(1, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
+
+            pstmt.setInt(2, content.getContentID());
+            pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getReview());
             pstmt.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
@@ -200,7 +202,7 @@ public class SQL_Query implements SQL_Query_IF {
                     tmp.SetReleaseDate(rs.getString("releaseDate"));
                     tmp.SetType(rs.getString("type"));
                     tmp.SetaddedBy(rs.getString("addedBy"));
-                    tmp.SetRatingScore(avgRating(con, rs.getInt("contentID")));
+                    tmp.SetAvarageRatingScore(avgRating(con, rs.getInt("contentID")));
                     tmp.Setgenres(getGenres(con, rs.getInt("contentID")));
                     tmp.SetCreators(getCreators(con, rs.getInt("contentID")));
                     tmp.SetReviews(getReviews(con, rs.getInt("contentID")));
@@ -240,7 +242,7 @@ public class SQL_Query implements SQL_Query_IF {
                     tmp.SetReleaseDate(rs.getString("releaseDate"));
                     tmp.SetType(rs.getString("type"));
                     tmp.SetaddedBy(rs.getString("addedBy"));
-                    tmp.SetRatingScore(avgRating(con, rs.getInt("contentID")));
+                    tmp.SetAvarageRatingScore(avgRating(con, rs.getInt("contentID")));
                     tmp.Setgenres(getGenres(con, rs.getInt("contentID")));
                     tmp.SetCreators(getCreators(con, rs.getInt("contentID")));
                     tmp.SetReviews(getReviews(con, rs.getInt("contentID")));
@@ -295,7 +297,6 @@ public class SQL_Query implements SQL_Query_IF {
             try {
                 rs.next();
                 tmp = rs.getString("rating");
-                System.out.println(tmp);
             } finally {
                 if (rs != null) rs.close();
             }
@@ -303,10 +304,8 @@ public class SQL_Query implements SQL_Query_IF {
             if (pstmt != null) pstmt.close();
         }
         if (tmp !=null) {
-            System.out.println("hej");
             return tmp;
         } else {
-            System.out.println("fuck");
             tmp = "no rating";
             return tmp;
         }

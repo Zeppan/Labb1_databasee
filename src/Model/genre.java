@@ -22,8 +22,6 @@ public class genre {
 
     public String getAddedBy(){return addedBy;}
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
+
 }
 

@@ -9,6 +9,7 @@ import Model.*;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import sample.SQL_Query;
 
 import java.util.ArrayList;
@@ -22,13 +23,18 @@ public class addController{
     private ArrayList<TextField> nationalities;
     private ArrayList<TextField> jobs;
     private int nr = 2;
+    private Alerts a = new Alerts();
 
     @FXML
     private ChoiceBox<String> contentType;
     @FXML
     private TextField name, nationality, job;
+    @FXML
+    Button AddMedia;
 
     public void initialize(){
+
+
         contentType.getItems().add("Movie");
         contentType.getItems().add("CD");
 
@@ -76,6 +82,7 @@ public class addController{
     @FXML
     public void getInformation() throws Exception {
     //This function will get the information from the media
+        boolean success = false;
         SQL_Query sql = new SQL_Query();
 
         ArrayList<Creator> creatorTmp = new ArrayList<>();
@@ -96,6 +103,16 @@ public class addController{
         contentTmp.SetReleaseDate(date.getValue().toString());
         contentTmp.SetaddedBy(Controller.usernameLoggedIn);
 
-        sql.insert(Controller.con, contentTmp);
+        try {
+            sql.insert(Controller.con, contentTmp);
+            success = true;
+            Stage stage = (Stage) AddMedia.getScene().getWindow();
+            stage.close();
+        }catch (Exception e){
+            a.errorAlert(e, "Something went wrong...");
+        }finally {
+            if(success)
+                a.successAlert("Successfully added new content!");
+        }
     }
 }

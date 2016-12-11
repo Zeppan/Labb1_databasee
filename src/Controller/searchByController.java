@@ -1,17 +1,16 @@
 package Controller;
 
 import Model.content;
-import Model.rating;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.SQL_Query;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -24,6 +23,8 @@ public class searchByController {
     @FXML
     private TextField name, genre, title;
     @FXML
+    Button Search1, Search2;
+    @FXML
     public void searchBy(ActionEvent e) throws Exception {
         SQL_Query sql = new SQL_Query();
 
@@ -31,7 +32,6 @@ public class searchByController {
 
         //Thread
         ArrayList<content> table = sql.search(Controller.con, searchName, searchGenre, searchTitle);
-        System.out.println(table);
 
         Stage media = new Stage();
 
@@ -43,20 +43,20 @@ public class searchByController {
         tbl.setArrayList(table);
         media.setScene(new Scene(root));
         media.show();
+
+        Stage stage = (Stage) Search1.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     private TextField rating;
     @FXML
     public void searchByRating(ActionEvent e) throws Exception {
-        SQL_Query sql = new SQL_Query();
 
+        SQL_Query sql = new SQL_Query();
         String ratings = rating.getText();
 
-        //Thread
         ArrayList<content> table = sql.searchRating(Controller.con, ratings);
-        System.out.println(table);
-
         Stage media = new Stage();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
@@ -67,7 +67,12 @@ public class searchByController {
         tbl.setArrayList(table);
         media.setScene(new Scene(root));
         media.show();
+
+        Stage stage = (Stage) Search2.getScene().getWindow();
+        stage.close();
     }
+
+
 
 
 

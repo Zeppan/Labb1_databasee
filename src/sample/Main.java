@@ -1,5 +1,6 @@
 package sample;
 
+import Controller.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +22,16 @@ public class Main extends Application {
         primaryStage.setTitle("Login");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() throws Exception{
+        try {
+            Controller.closeConnection();
+            System.out.println("Connection closed!");
+        }catch (Exception e){
+            System.out.println("No connection as of yet");
+        }
     }
 
     public static void main(String[] args) {

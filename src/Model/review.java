@@ -9,6 +9,11 @@ public class review {
     private String review;
     private String addedBy;
 
+    public review(String review,String addedBy) {
+        this.review = review;
+        this.addedBy = addedBy;
+    }
+
     public review(String date, String review,String addedBy) {
         this.date = date;
         this.review = review;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Created by nicla on 2016-12-08.
  */
 public interface SQL_Query_IF {
-    Boolean loggin(Connection con, String username, String password) throws Exception;
+    Boolean login(Connection con, String username, String password) throws Exception;
 
     void insert(Connection con, content content) throws Exception;
 

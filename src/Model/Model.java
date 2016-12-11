@@ -16,13 +16,4 @@ public class Model {
 
         user = new user();
     }
-
-    public void createContent() {
-        content cont = new content();
-
-    }
-
-    public ArrayList<content> getContent() {
-        return this.content;
-    }
 }

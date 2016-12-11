@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import sample.SQL_Query;
 
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class tableController {
 
     private ArrayList<content> contents;
+    Alerts a;
 
     @FXML
     private TableView<content> tblView;
@@ -30,6 +32,8 @@ public class tableController {
     private ChoiceBox<String> Rating;
 
     public void initialize(ArrayList<content> info){
+
+        a = new Alerts();
 
         for(content content : info){
             content.setGenresString();
@@ -85,20 +89,50 @@ public class tableController {
     private TextArea reviewTextByUser;
     @FXML
     public void ReviewSelected(){
+
+        boolean success = false;
+
+        try {
             ObservableList<content> item;
             item = tblView.getSelectionModel().getSelectedItems();
             String reviewText = reviewTextByUser.getText();
-            item.get(0).addReview(reviewText);
-            content cnt = item.get(0);
+            content addingReview = item.get(0);
+            addingReview.addReview(reviewText, Controller.usernameLoggedIn);
+            SQL_Query sql = new SQL_Query();
+            sql.insertIntoReviews(Controller.con, addingReview);
+            success = true;
+        }catch (Exception e){
+            a.errorAlert(e, "You have already reviewed this content!");
+        }finally{
+            if(success){
+                a.successAlert("Content reviewed successfully!");
+            }
+        }
     }
 
+
     @FXML
-    ChoiceBox<String> rating;
-    @FXML
-    public void rateContent(){
-        ObservableList<content> revs;
-        revs = tblView.getSelectionModel().getSelectedItems();
-        //revs.get(0).SetRatingScore(rating.getValue());
+    public void rateContent() {
+
+        boolean success = false;
+
+        try {
+            ObservableList<content> revs;
+            revs = tblView.getSelectionModel().getSelectedItems();
+            String rate = Rating.getValue();
+            content content = revs.get(0);
+            content.SetRatingScore(rate, Controller.usernameLoggedIn);
+
+            SQL_Query sql = new SQL_Query();
+            sql.insertIntoRating(Controller.con, content);
+            success = true;
+        }catch(Exception e){
+            a.errorAlert(e, "You have already rated this content!");
+        }finally{
+            if(success){
+                a.successAlert("Content rated successfully!");
+            }
+        }
     }
 
     @FXML
@@ -120,5 +154,6 @@ public class tableController {
         reviewsStage.show();
 
     }
+
 
 }

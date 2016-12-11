@@ -7,16 +7,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.security.spec.ECField;
+import java.sql.SQLException;
+
 /**
  * Created by niclas on 2016-12-06.
  */
 public class mainStageController {
 
-    private String user;
 
-    public void initialize(String user){
-        this.user = user;
-    }
+
+
+
 
     @FXML
     public void showSearch(ActionEvent e) throws Exception{

@@ -18,16 +18,15 @@ public class Controller implements Runnable {
         con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(server, "root", "glantz");
+            con = DriverManager.getConnection(server, "root", "root");
             System.out.println("connected!");
 
-            return sql.loggin(con, username, password);
+            return sql.login(con, username, password);
 
         } finally {
             try {
                 if (con != null) {
 
-                    System.out.println("Connection closed");
                 }
             }finally{
 
@@ -35,6 +34,10 @@ public class Controller implements Runnable {
 
 
         }
+    }
+
+    public static void closeConnection() throws Exception {
+        con.close();
     }
 
     @Override

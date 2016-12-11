@@ -112,7 +112,11 @@ public class content {
         this.contentID = contentID;
     }
 
-    public void SetRatingScore(String rating) {
+    public void SetRatingScore(String rating, String addedBy) {
+        this.rating = new rating(rating, addedBy);
+    }
+
+    public void SetAvarageRatingScore(String rating) {
         this.rating = new rating(rating);
     }
 
@@ -128,20 +132,14 @@ public class content {
         this.creators.addAll(creators);
     }
 
-    public void addCreator(int creatorID, String name, String nationality, String role, String addedBy) {
-        creators.add(new Creator(creatorID, name, nationality, role, addedBy));
-    }
 
     public void setGenre(String genr, String addedBy) {
         genres.add(new genre(genr, addedBy));
     }
 
-    public void addReview(String date, String review, String addedBy) {
-        reviews.add(new review(date, review, addedBy));
+    public void addReview(String review, String addedBy) {
+        reviews.add(new review(review, addedBy));
     }
 
-    public void addReview(String rev) {
-        reviews.add(new review(rev));
-    }
 
 }
