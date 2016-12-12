@@ -230,13 +230,14 @@ public class SQL_Query implements SQL_Query_IF {
         con.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
-            content tmp = new content();
+
             pstmt = con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate, content.type, content.addedBy, AVG(rating.rating) AS rating FROM content,rating WHERE content.contentID = rating.contentID GROUP BY content.contentID HAVING AVG(rating.rating) LIKE ?");
             pstmt.setString(1, rating + "%");
 
             ResultSet rs = pstmt.executeQuery();
             try {
                 while (rs.next()) {
+                    content tmp = new content();
                     tmp.SetContentID(rs.getInt("contentID"));
                     tmp.SetTitle(rs.getString("title"));
                     tmp.SetReleaseDate(rs.getString("releaseDate"));

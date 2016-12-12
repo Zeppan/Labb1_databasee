@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class tableController {
 
     private ArrayList<content> contents;
-    Alerts a;
+    private Alerts a;
 
     @FXML
     private TableView<content> tblView;
@@ -31,11 +31,11 @@ public class tableController {
     @FXML
     private ChoiceBox<String> Rating;
 
-    public void initialize(ArrayList<content> info){
+    public void initialize(ArrayList<content> info) {
 
         a = new Alerts();
 
-        for(content content : info){
+        for (content content : info) {
             content.setGenresString();
         }
 
@@ -55,18 +55,17 @@ public class tableController {
         ObservableList<content> data = FXCollections.observableArrayList(info);
 
 
-
         TableColumn Title = new TableColumn("Title");
-        Title.setCellValueFactory(new PropertyValueFactory<content,String>("Title"));
+        Title.setCellValueFactory(new PropertyValueFactory<content, String>("Title"));
 
         TableColumn ReleaseDate = new TableColumn("ReleaseDate");
-        ReleaseDate.setCellValueFactory(new PropertyValueFactory<content,String>("releaseDate"));
+        ReleaseDate.setCellValueFactory(new PropertyValueFactory<content, String>("releaseDate"));
 
         TableColumn Type = new TableColumn("Type");
-        Type.setCellValueFactory(new PropertyValueFactory<content,String>("type"));
+        Type.setCellValueFactory(new PropertyValueFactory<content, String>("type"));
 
         TableColumn ratings = new TableColumn("Rating");
-        ratings.setCellValueFactory(new PropertyValueFactory<content,String>("rating"));
+        ratings.setCellValueFactory(new PropertyValueFactory<content, String>("rating"));
 
         TableColumn genres = new TableColumn("Genres");
         genres.setCellValueFactory(new PropertyValueFactory<content, String>("genreString"));
@@ -80,33 +79,48 @@ public class tableController {
     }
 
 
-    public void setArrayList(ArrayList<content> information){
+    public void setArrayList(ArrayList<content> information) {
         this.contents = new ArrayList<>();
         this.contents = information;
     }
 
     @FXML
     private TextArea reviewTextByUser;
-    @FXML
-    public void ReviewSelected(){
 
-        boolean success = false;
+    @FXML
+    public void ReviewSelected() {
+
+
+        ObservableList<content> item;
+        item = tblView.getSelectionModel().getSelectedItems();
+        String reviewText = reviewTextByUser.getText();
+        content addingReview = item.get(0);
+        addingReview.addReview(reviewText, Controller.usernameLoggedIn);
+        SQL_Query sql = new SQL_Query();
 
         try {
-            ObservableList<content> item;
-            item = tblView.getSelectionModel().getSelectedItems();
-            String reviewText = reviewTextByUser.getText();
-            content addingReview = item.get(0);
-            addingReview.addReview(reviewText, Controller.usernameLoggedIn);
-            SQL_Query sql = new SQL_Query();
-            sql.insertIntoReviews(Controller.con, addingReview);
-            success = true;
-        }catch (Exception e){
-            a.errorAlert(e, "You have already reviewed this content!");
-        }finally{
-            if(success){
-                a.successAlert("Content reviewed successfully!");
-            }
+            new Thread() {
+                boolean success = false;
+                Exception error;
+                public void run() {
+                    //Statement function here!
+                    try {
+                        sql.insertIntoReviews(Controller.con, addingReview);
+                        success = true;
+                    } catch (Exception e) {
+                        error = e;
+                    }
+                    javafx.application.Platform.runLater(() -> {
+                        //when done
+                        if (success)
+                            a.successAlert("Content reviewed successfully!");
+                        else
+                            a.errorAlert(error, "You have already reviewed this content!");
+                    });
+                }
+            }.start();
+        } catch (Exception Ex) {
+            System.out.println("Fail");
         }
     }
 
@@ -114,29 +128,52 @@ public class tableController {
     @FXML
     public void rateContent() {
 
-        boolean success = false;
+
+        ObservableList<content> revs;
+        revs = tblView.getSelectionModel().getSelectedItems();
+        String rate = Rating.getValue();
+        content content = revs.get(0);
+        content.SetRatingScore(rate, Controller.usernameLoggedIn);
+
+        SQL_Query sql = new SQL_Query();
+
 
         try {
-            ObservableList<content> revs;
-            revs = tblView.getSelectionModel().getSelectedItems();
-            String rate = Rating.getValue();
-            content content = revs.get(0);
-            content.SetRatingScore(rate, Controller.usernameLoggedIn);
+            new Thread() {
+                boolean success = false;
+                Exception error;
 
-            SQL_Query sql = new SQL_Query();
-            sql.insertIntoRating(Controller.con, content);
-            success = true;
-        }catch(Exception e){
-            a.errorAlert(e, "You have already rated this content!");
-        }finally{
-            if(success){
-                a.successAlert("Content rated successfully!");
-            }
+                public void run() {
+                    //Statement function here!
+                    try {
+                        sql.insertIntoRating(Controller.con, content);
+                        success = true;
+                    } catch (Exception e) {
+                        error = e;
+                    }
+
+                    javafx.application.Platform.runLater(new Runnable() {
+                        public void run() {
+                            //when done
+                            if (success)
+                                a.successAlert("Content rated successfully!");
+                            else
+                                a.errorAlert(error, "You have already rated this content!");
+                        }
+
+                    });
+                }
+            }.start();
+        } catch (Exception Ex) {
+            System.out.println(Ex);
         }
+
+
     }
 
+
     @FXML
-    public void getSelectedRow() throws IOException {
+    public void getSelectedRow() throws Exception {
 
         Stage reviewsStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/reviewTable.fxml"));

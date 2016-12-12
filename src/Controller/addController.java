@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Niclas on 2016-12-06.
  */
-public class addController{
+public class addController {
 
     private ArrayList<TextField> creators;
     private ArrayList<TextField> nationalities;
@@ -32,7 +32,7 @@ public class addController{
     @FXML
     Button AddMedia;
 
-    public void initialize(){
+    public void initialize() {
 
 
         contentType.getItems().add("Movie");
@@ -52,7 +52,7 @@ public class addController{
     VBox creatorBox;
 
     @FXML
-    public void addCreator(ActionEvent e){
+    public void addCreator(ActionEvent e) {
         Label creator = new Label("Creator " + nr + ":");
         TextField creatorTxtField = new TextField();
         creators.add(creatorTxtField);
@@ -80,13 +80,12 @@ public class addController{
     private DatePicker date;
 
     @FXML
-    public void getInformation() throws Exception {
-    //This function will get the information from the media
-        boolean success = false;
+    public void getInformation() {
+        //This function will get the information from the media
         SQL_Query sql = new SQL_Query();
 
         ArrayList<Creator> creatorTmp = new ArrayList<>();
-        for(int i = 0; i < creators.size(); i++){
+        for (int i = 0; i < creators.size(); i++) {
             creatorTmp.add(new Creator());
             creatorTmp.get(i).setCreatorName(creators.get(i).getText());
             creatorTmp.get(i).setNationality(nationalities.get(i).getText());
@@ -103,16 +102,38 @@ public class addController{
         contentTmp.SetReleaseDate(date.getValue().toString());
         contentTmp.SetaddedBy(Controller.usernameLoggedIn);
 
+
         try {
-            sql.insert(Controller.con, contentTmp);
-            success = true;
-            Stage stage = (Stage) AddMedia.getScene().getWindow();
-            stage.close();
-        }catch (Exception e){
-            a.errorAlert(e, "Something went wrong...");
-        }finally {
-            if(success)
-                a.successAlert("Successfully added new content!");
+            new Thread() {
+                Boolean success = false;
+                Exception error;
+                public void run() {
+                    //Statement function here!
+                    try {
+                        sql.insert(Controller.con, contentTmp);
+                        success = true;
+                    } catch (Exception e) {
+                        error = e;
+                    }
+                    javafx.application.Platform.runLater(new Runnable() {
+                        public void run() {
+                            //when done
+                            if (success)
+                                a.successAlert("Successfully added new content!");
+                            else
+                                a.errorAlert(error, "Something went wrong...");
+
+                            Stage stage = (Stage) AddMedia.getScene().getWindow();
+                            stage.close();
+                        }
+
+                    });
+                }
+            }.start();
+        } catch (Exception Ex) {
+            System.out.println(Ex);
         }
+
+
     }
 }

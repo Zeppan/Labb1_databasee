@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.SQL_Query;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -30,22 +31,45 @@ public class searchByController {
 
         String searchName = name.getText(), searchGenre = genre.getText(), searchTitle = title.getText();
 
-        //Thread
-        ArrayList<content> table = sql.search(Controller.con, searchName, searchGenre, searchTitle);
+        try {
+            new Thread() {
+                ArrayList<content> table;
+                public void run() {
+                    //Statement function here!
+                    try {
+                        table = sql.search(Controller.con, searchName, searchGenre, searchTitle);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    javafx.application.Platform.runLater(new Runnable() {
+                        public void run() {
+                            //when done
+                            Stage media = new Stage();
 
-        Stage media = new Stage();
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
+                            Parent root = null;
+                            try {
+                                root = fxmlLoader.load();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
-        Parent root = fxmlLoader.load();
+                            tableController tbl = fxmlLoader.<tableController>getController();
+                            tbl.initialize(table);
+                            tbl.setArrayList(table);
+                            media.setScene(new Scene(root));
+                            media.show();
 
-        tableController tbl = fxmlLoader.<tableController>getController();
-        tbl.initialize(table);
-        tbl.setArrayList(table);
-        media.setScene(new Scene(root));
-        media.show();
+                            Stage stage = (Stage) Search1.getScene().getWindow();
+                            stage.close();
+                        }
 
-        Stage stage = (Stage) Search1.getScene().getWindow();
-        stage.close();
+                    });
+                }
+            }.start();
+        } catch (Exception Ex) {
+            System.out.println(Ex);
+        }
     }
 
     @FXML
@@ -56,20 +80,49 @@ public class searchByController {
         SQL_Query sql = new SQL_Query();
         String ratings = rating.getText();
 
-        ArrayList<content> table = sql.searchRating(Controller.con, ratings);
-        Stage media = new Stage();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
-        Parent root = fxmlLoader.load();
+        try {
+            new Thread() {
+                ArrayList<content> table;
+                public void run() {
+                    //Statement function here!
+                    try {
+                         table = sql.searchRating(Controller.con, ratings);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    javafx.application.Platform.runLater(new Runnable() {
+                        public void run() {
+                            //when done
+                            Stage media = new Stage();
 
-        tableController tbl = fxmlLoader.<tableController>getController();
-        tbl.initialize(table);
-        tbl.setArrayList(table);
-        media.setScene(new Scene(root));
-        media.show();
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/tableView.fxml"));
+                            Parent root = null;
+                            try {
+                                root = fxmlLoader.load();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
 
-        Stage stage = (Stage) Search2.getScene().getWindow();
-        stage.close();
+                            tableController tbl = fxmlLoader.<tableController>getController();
+                            tbl.initialize(table);
+                            tbl.setArrayList(table);
+                            media.setScene(new Scene(root));
+                            media.show();
+
+                            Stage stage = (Stage) Search2.getScene().getWindow();
+                            stage.close();
+                        }
+
+                    });
+                }
+            }.start();
+        } catch (Exception Ex) {
+            System.out.println(Ex);
+        }
+
+
+
     }
 
 
