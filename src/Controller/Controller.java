@@ -6,7 +6,7 @@ import java.sql.*;
 
 import sample.SQL_Query;
 
-public class Controller implements Runnable {
+public class Controller {
 
     public static Connection con;
     public static String usernameLoggedIn;
@@ -40,8 +40,4 @@ public class Controller implements Runnable {
         con.close();
     }
 
-    @Override
-    public void run() {
-
-    }
 }
