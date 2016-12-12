@@ -23,6 +23,12 @@ public class loginController {
     TextField txt_usr_name, txt_pass, databasename;
     @FXML
     Button btn_login;
+
+    /**
+     * Logs in when button is pressed
+     * @param e
+     * @throws Exception
+     */
     @FXML
     public void login(ActionEvent e) throws Exception {
         username = txt_usr_name.getText();
@@ -49,6 +55,11 @@ public class loginController {
 
     }
 
+    /**
+     * Switches GUI to main stage
+     * @param e
+     * @throws IOException
+     */
     public void switchSceneMain(ActionEvent e) throws IOException {
         Stage mainStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../FXML/mainStage.fxml"));

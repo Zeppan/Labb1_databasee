@@ -11,6 +11,14 @@ public class Controller {
     public static Connection con;
     public static String usernameLoggedIn;
 
+    /**
+     * Connects to database
+     * @param username
+     * @param password
+     * @param dbName
+     * @return
+     * @throws Exception
+     */
     public static boolean connectToDatabase(String username, String password, String dbName) throws Exception {
         SQL_Query sql = new SQL_Query();
         usernameLoggedIn = username;
@@ -18,7 +26,7 @@ public class Controller {
         con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(server, "root", "root");
+            con = DriverManager.getConnection(server, "user", "user");
             System.out.println("connected!");
 
             return sql.login(con, username, password);
@@ -36,6 +44,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Closes connection to database
+     * @throws Exception
+     */
     public static void closeConnection() throws Exception {
         con.close();
     }

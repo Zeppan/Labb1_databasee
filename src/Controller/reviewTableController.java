@@ -22,17 +22,20 @@ public class reviewTableController {
     @FXML
     Label title;
 
-    public void initialize(ArrayList<review> info, String titleText){
-
-
+    /**
+     * Shows all reviews in a table
+     * @param info
+     * @param titleText
+     */
+    public void initialize(ArrayList<review> info, String titleText) {
 
         ObservableList<review> data = FXCollections.observableArrayList(info);
 
         TableColumn review = new TableColumn("Review");
-        review.setCellValueFactory(new PropertyValueFactory<review,String>("review"));
+        review.setCellValueFactory(new PropertyValueFactory<review, String>("review"));
 
         TableColumn date = new TableColumn("Date");
-        date.setCellValueFactory(new PropertyValueFactory<review,String>("date"));
+        date.setCellValueFactory(new PropertyValueFactory<review, String>("date"));
 
         reviewTable.setItems(data);
         reviewTable.getColumns().addAll(review, date);

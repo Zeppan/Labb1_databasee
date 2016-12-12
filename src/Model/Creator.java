@@ -11,6 +11,14 @@ public class Creator {
     private String role;
     private String addedBy;
 
+    /**
+     *
+     * @param creatorID
+     * @param creatorName
+     * @param nationality
+     * @param role
+     * @param addedBy
+     */
     public Creator(int creatorID, String creatorName, String nationality, String role, String addedBy) {
         this.creatorName = creatorName;
         this.nationality = nationality;

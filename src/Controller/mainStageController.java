@@ -14,10 +14,11 @@ import javafx.stage.Stage;
 public class mainStageController {
 
 
-
-
-
-
+    /**
+     * When search button is pressed show search window
+     * @param e
+     * @throws Exception
+     */
     @FXML
     public void showSearch(ActionEvent e) throws Exception{
         Stage TableView = new Stage();
@@ -26,6 +27,11 @@ public class mainStageController {
         TableView.show();
     }
 
+    /**
+     * When Add button is pressed, show add media window
+     * @param e
+     * @throws Exception
+     */
     @FXML
     public void addMedia(ActionEvent e) throws Exception{
         Stage media = new Stage();

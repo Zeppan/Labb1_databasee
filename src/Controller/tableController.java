@@ -12,8 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import sample.SQL_Query;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -31,6 +29,10 @@ public class tableController {
     @FXML
     private ChoiceBox<String> Rating;
 
+    /**
+     * Generates the whole table with the search results
+     * @param info
+     */
     public void initialize(ArrayList<content> info) {
 
         a = new Alerts();
@@ -87,6 +89,9 @@ public class tableController {
     @FXML
     private TextArea reviewTextByUser;
 
+    /**
+     * Takes the text from the @TextArea and tries to add it to the database for the specific content
+     */
     @FXML
     public void ReviewSelected() {
 
@@ -124,7 +129,9 @@ public class tableController {
         }
     }
 
-
+    /**
+     * Takes the rating from the ChoiceBox and tries to add it to the database for the specific content
+     */
     @FXML
     public void rateContent() {
 
@@ -171,7 +178,10 @@ public class tableController {
 
     }
 
-
+    /**
+     * Get selected row from table and then gets the title, Then shows all reviews for the specific content
+     * @throws Exception
+     */
     @FXML
     public void getSelectedRow() throws Exception {
 

@@ -34,6 +34,7 @@ public class content {
         reviews = new ArrayList<>();
     }
 
+
     public String getGenreString(){return genreString;}
 
     public ArrayList<genre> getGenres() {

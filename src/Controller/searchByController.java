@@ -25,6 +25,12 @@ public class searchByController {
     private TextField name, genre, title;
     @FXML
     Button Search1, Search2;
+
+    /**
+     * Takes in the text from textfield and then search for those items in the database
+     * @param e
+     * @throws Exception
+     */
     @FXML
     public void searchBy(ActionEvent e) throws Exception {
         SQL_Query sql = new SQL_Query();
@@ -74,6 +80,12 @@ public class searchByController {
 
     @FXML
     private TextField rating;
+
+    /**
+     * Takes in the rating from textfield and then search for matching items in database
+     * @param e
+     * @throws Exception
+     */
     @FXML
     public void searchByRating(ActionEvent e) throws Exception {
 
@@ -124,9 +136,4 @@ public class searchByController {
 
 
     }
-
-
-
-
-
 }

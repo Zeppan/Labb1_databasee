@@ -7,6 +7,11 @@ import javafx.scene.control.Alert;
  */
 public class Alerts {
 
+    /**
+     * Error alert
+     * @param e
+     * @param msg
+     */
     public void errorAlert(Exception e, String msg){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
@@ -15,6 +20,10 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    /**
+     * Success alert
+     * @param msg
+     */
     public void successAlert(String msg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success!");

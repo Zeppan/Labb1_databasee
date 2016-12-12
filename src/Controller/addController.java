@@ -32,6 +32,9 @@ public class addController {
     @FXML
     Button AddMedia;
 
+    /**
+     * Initializes add window
+     */
     public void initialize() {
 
 
@@ -51,6 +54,10 @@ public class addController {
     @FXML
     VBox creatorBox;
 
+    /**
+     * Adds the required fields for another person
+     * @param e
+     */
     @FXML
     public void addCreator(ActionEvent e) {
         Label creator = new Label("Creator " + nr + ":");
@@ -79,6 +86,9 @@ public class addController {
     @FXML
     private DatePicker date;
 
+    /**
+     * Gathers all information that the user has put in and then tries to add it to the database
+     */
     @FXML
     public void getInformation() {
         //This function will get the information from the media
