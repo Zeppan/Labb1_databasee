@@ -10,7 +10,14 @@ import Model.*;
  * Created by Glantz on 2016-12-06.
  */
 public class SQL_Query implements SQL_Query_IF {
-
+    /**
+     * Logs in a specific user, that user has to exist in the database in beforehand
+     * @param con Connection
+     * @param username String
+     * @param password  String
+     * @return
+     * @throws Exception
+     */
     @Override
     public Boolean login(Connection con, String username, String password) throws Exception {
 
@@ -39,6 +46,12 @@ public class SQL_Query implements SQL_Query_IF {
         return false;
     }
 
+    /**
+     * A transaction that inserts a new content with creators and genre.
+     * @param con Connection
+     * @param content
+     * @throws Exception
+     */
     @Override
     public void insert(Connection con, content content) throws Exception {
         con.setAutoCommit(false);
@@ -57,6 +70,12 @@ public class SQL_Query implements SQL_Query_IF {
         }
     }
 
+    /**
+     * Inserts a newly made review to the database
+     * @param con
+     * @param content
+     * @throws Exception
+     */
     @Override
     public void insertIntoReviews(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
@@ -75,6 +94,12 @@ public class SQL_Query implements SQL_Query_IF {
         }
     }
 
+    /**
+     * Insert a newly created raiting to the database
+     * @param con
+     * @param content
+     * @throws Exception
+     */
     @Override
     public void insertIntoRating(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
@@ -92,7 +117,12 @@ public class SQL_Query implements SQL_Query_IF {
         }
     }
 
-
+    /**
+     * A private method used in the insert, this specific part insert the newly made content into the database
+     * @param con
+     * @param content
+     * @throws Exception
+     */
     private void insertIntoContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -116,11 +146,17 @@ public class SQL_Query implements SQL_Query_IF {
         }
     }
 
-
+    /**
+     * A private method used in the insert, this specific method inserts a newly made creator. If the creator already exist the creatorID is collected for further use
+     * @param con
+     * @param content
+     * @throws Exception
+     */
     private void insertIntoCreator(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
             for (Creator creator : content.getCreators()) {
+                if(checkcreator(con,creator)==0){
                 pstmt = con.prepareStatement("INSERT INTO creator(name,nationality,role,addedBy) VALUES(?,?,?,?)", pstmt.RETURN_GENERATED_KEYS);
                 pstmt.setString(1, creator.getCreatorName());
                 pstmt.setString(2, creator.getNationality());
@@ -135,7 +171,10 @@ public class SQL_Query implements SQL_Query_IF {
                 } finally {
                     if (rs != null) rs.close();
                 }
-                pstmt.close();
+                pstmt.close();}
+                else{
+                    creator.setCreatorID(checkcreator(con,creator));
+                }
             }
 
         } finally {
@@ -144,7 +183,12 @@ public class SQL_Query implements SQL_Query_IF {
         }
     }
 
-
+    /**
+     * A private method used in insert, this specific method collects the contentID and the creatorID and adds them together in a single table
+     * @param con
+     * @param content
+     * @throws Exception
+     */
     private void insertIntoCreatedContent(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -161,7 +205,12 @@ public class SQL_Query implements SQL_Query_IF {
         }
     }
 
-
+    /**
+     * A private method used in insert, this specific method collect the contentID and pair it with the genre, then this is inserted into a specific table
+     * @param con
+     * @param content
+     * @throws Exception
+     */
     private void insertIntoContentGenre(Connection con, content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -181,7 +230,44 @@ public class SQL_Query implements SQL_Query_IF {
 
     }
 
+    /**
+     * Private method used bu insertcreator, this method checks if the creator already exist and if so returns its creatorID
+     * @param con
+     * @param creator
+     * @return
+     * @throws Exception
+     */
+    private int checkcreator(Connection con,Creator creator)throws Exception{
+        int tmpCreatorID = 0;
+        PreparedStatement pstmt = null;
+        try{
+            pstmt = con.prepareStatement("SELECT creatorID FROM creator WHERE name = ? AND nationality = ? AND role = ?");
+            pstmt.setString(1,creator.getCreatorName());
+            pstmt.setString(2,creator.getNationality());
+            pstmt.setString(3,creator.getRole());
+            ResultSet rs = pstmt.executeQuery();
+            try{
+                rs.next();
+                tmpCreatorID = rs.getInt("creatorID");
 
+            }finally {
+                if(rs != null) rs.close();
+            }
+        }finally {
+            if(pstmt != null) pstmt.close();
+        }
+        return tmpCreatorID;
+    }
+
+    /**
+     * search after titel, name and genre. all possible matches are placed into an arraylist and then returned.
+     * @param con
+     * @param name
+     * @param genre
+     * @param title
+     * @return
+     * @throws Exception
+     */
     @Override
     public ArrayList<content> search(Connection con, String name, String genre, String title) throws Exception {
         ArrayList<content> tmparr = new ArrayList<>();
@@ -224,6 +310,13 @@ public class SQL_Query implements SQL_Query_IF {
         return tmparr;
     }
 
+    /**
+     * Search after a rating all the matches are stored in one arraylist and then returned
+     * @param con
+     * @param rating
+     * @return
+     * @throws Exception
+     */
     @Override
     public ArrayList<content> searchRating(Connection con, String rating) throws Exception {
         ArrayList<content> tmparr = new ArrayList<>();
@@ -265,7 +358,13 @@ public class SQL_Query implements SQL_Query_IF {
 
     }
 
-
+    /**
+     * private method that collects all the genres connected to a specific contentID and the returned in a arraylist
+     * @param con
+     * @param contentID
+     * @return
+     * @throws Exception
+     */
     private ArrayList<genre> getGenres(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<genre> genres = new ArrayList<genre>();
@@ -287,7 +386,13 @@ public class SQL_Query implements SQL_Query_IF {
         return genres;
     }
 
-
+    /**
+     * Private method that calculates the avg rating for a specific contentID and then returns it
+     * @param con
+     * @param contentID
+     * @return
+     * @throws Exception
+     */
     private String avgRating(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         String tmp;
@@ -313,7 +418,13 @@ public class SQL_Query implements SQL_Query_IF {
 
     }
 
-
+    /**
+     * Private method that gets all creators connected to a specific contentID and returned in a arraylist
+     * @param con
+     * @param contentID
+     * @return
+     * @throws Exception
+     */
     private ArrayList<Creator> getCreators(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<Creator> Creators = new ArrayList<>();
@@ -340,7 +451,13 @@ public class SQL_Query implements SQL_Query_IF {
         return Creators;
     }
 
-
+    /**
+     * Private method that gets all the reviews that are connected to a specific contentID
+     * @param con
+     * @param contentID
+     * @return
+     * @throws Exception
+     */
     private ArrayList<review> getReviews(Connection con, int contentID) throws Exception {
         PreparedStatement pstmt = null;
         ArrayList<review> reviews = new ArrayList<>();

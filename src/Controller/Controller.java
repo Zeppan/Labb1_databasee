@@ -26,7 +26,7 @@ public class Controller {
         con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(server, "user", "user");
+            con = DriverManager.getConnection(server, "root", "glantz");
             System.out.println("connected!");
 
             return sql.login(con, username, password);

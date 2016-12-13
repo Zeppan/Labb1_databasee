@@ -17,6 +17,14 @@ public class content {
     private ArrayList<review> reviews;
     private String genreString;
 
+    /**
+     * constructor that takes in all the necessary information and creates a new object
+     * @param contentID
+     * @param title
+     * @param releaseDate
+     * @param type
+     * @param rating
+     */
     public content(int contentID, String title, String releaseDate, String type, rating rating) {
         creators = new ArrayList<>();
         genres = new ArrayList<>();
@@ -28,6 +36,9 @@ public class content {
         this.contentID = contentID;
     }
 
+    /**
+     * constructor that takes in nothing and makes a new object with 3 arraylists
+     */
     public content() {
         creators = new ArrayList<>();
         genres = new ArrayList<>();
@@ -37,10 +48,18 @@ public class content {
 
     public String getGenreString(){return genreString;}
 
+    /**
+     * returns all the genres in a arraylist
+     * @return
+     */
     public ArrayList<genre> getGenres() {
         return genres;
     }
 
+    /**
+     * returns all the creators in a arrylist
+     * @return
+     */
     public ArrayList<Creator> getCreators() {
         return creators;
     }
@@ -73,6 +92,10 @@ public class content {
         return this.rating;
     }
 
+    /**
+     * returns all the reviews in a single string
+     * @return
+     */
     public String getReviews() {
         String tmp = "";
         for (review rev : reviews) {
@@ -81,6 +104,9 @@ public class content {
         return tmp;
     }
 
+    /**
+     * set all the genres in a single string
+     */
     public void setGenresString() {
         String tmp = "";
         for (genre gen : genres) {
@@ -89,6 +115,10 @@ public class content {
         this.genreString = tmp;
     }
 
+    /**
+     * returns all the reviews in a arraylist
+     * @return
+     */
     public ArrayList<review> getReviewsArray() {
         return reviews;
     }
