@@ -28,6 +28,7 @@ public class searchByController {
 
     /**
      * Takes in the text from textfield and then search for those items in the database
+     *
      * @param e
      * @throws Exception
      */
@@ -40,6 +41,7 @@ public class searchByController {
         try {
             new Thread() {
                 ArrayList<content> table;
+
                 public void run() {
                     //Statement function here!
                     try {
@@ -83,6 +85,7 @@ public class searchByController {
 
     /**
      * Takes in the rating from textfield and then search for matching items in database
+     *
      * @param e
      * @throws Exception
      */
@@ -96,10 +99,11 @@ public class searchByController {
         try {
             new Thread() {
                 ArrayList<content> table;
+
                 public void run() {
                     //Statement function here!
                     try {
-                         table = sql.searchRating(Controller.con, ratings);
+                        table = sql.searchRating(Controller.con, ratings);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -132,8 +136,5 @@ public class searchByController {
         } catch (Exception Ex) {
             System.out.println(Ex);
         }
-
-
-
     }
 }
