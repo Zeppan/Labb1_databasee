@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by Glantz on 2017-01-08.
  */
-public class NoSql implements SQL_Query_IF{
+public class NoSql implements SQL_Query_IF {
 
 
     @Override
@@ -26,16 +26,16 @@ public class NoSql implements SQL_Query_IF{
 
         DBCollection coll = Controller.db.getCollection("movie");
         Document obj = new Document("name", "anders")
-        obj.append("title",content.getTitle());
-        obj.append("type",content.getType());
-        obj.append("release_date",content.getReleaseDate());
-        obj.append("creator", new Document("",""));
-        obj.append("addedby",content.getAddedBy());
+                .append("title", content.getTitle())
+                .append("type", content.getType())
+                .append("release_date", content.getReleaseDate())
+                .append("creator", new Document("", ""))
+                .append("addedby", content.getAddedBy());
 
         coll.insert(obj);
 
 
-}
+    }
 
     @Override
     public void insertIntoRating(Connection con, content content) throws Exception {
@@ -49,6 +49,9 @@ public class NoSql implements SQL_Query_IF{
 
     @Override
     public ArrayList<content> search(Connection con, String name, String genre, String title) throws Exception {
+
+        DBCollection coll = Controller.db.getCollection("content");
+        
         return null;
     }
 
