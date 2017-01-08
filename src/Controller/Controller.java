@@ -5,13 +5,14 @@ import java.sql.*;
 
 
 import com.mongodb.*;
+import com.mongodb.client.MongoDatabase;
 import sample.SQL_Query;
 
 public class Controller {
 
     public static Connection con;
     public static String usernameLoggedIn;
-    public static DB db;
+    public static MongoDatabase db;
     /**
      * Connects to database
      * @param username
@@ -27,14 +28,8 @@ public class Controller {
 
        try {
            MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
-           db = (new MongoClient("localhost",27017)).getDB("flomm");
-
-           DBCollection coll = db.getCollection("User");
-           BasicDBObject obj = new BasicDBObject();
-           obj.append("user_name","hglantz@hotmail.com");
-           obj.append("name","Hampus");
-           obj.append("password","kanske");
-           coll.insert(obj);
+           db = mongoClient.getDatabase("flomm");
+           
 
 
 

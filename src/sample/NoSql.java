@@ -3,8 +3,37 @@ package sample;
 import Model.*;
 import Controller.*;
 import com.mongodb.*;
-import org.bson.Document;
+import org.bson.*;
 //import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.BulkWriteOperation;
+import com.mongodb.BulkWriteResult;
+import com.mongodb.Cursor;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.ParallelScanOptions;
+import com.mongodb.ServerAddress;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.ServerAddress;
+
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoCollection;
+
+import org.bson.Document;
+import java.util.Arrays;
+import com.mongodb.Block;
+
+import com.mongodb.client.MongoCursor;
+import static com.mongodb.client.model.Filters.*;
+import com.mongodb.client.result.DeleteResult;
+import static com.mongodb.client.model.Updates.*;
+import com.mongodb.client.result.UpdateResult;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,10 +53,10 @@ public class NoSql implements SQL_Query_IF {
     @Override
     public void insert(Connection con, content content) throws Exception {
 
-        DBCollection coll = Controller.db.getCollection("movie");
-        Document document = new Document("Title", content.getTitle())
-                .append("type", content.getType())
-                .append("release_date", content.getReleaseDate());
+        MongoCollection<Document> collection = Controller.db.getCollection("test");
+        Document document = new Document("Title", content.getTitle());
+        document.append("type", content.getType());
+        document.append("release_date", content.getReleaseDate());
         for (Creator creator : content.getCreators()) {
             document.append("creator", new Document("Name", creator.getCreatorName())
                     .append("Nationality", creator.getNationality())
