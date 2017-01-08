@@ -81,6 +81,8 @@ public class NoSql implements SQL_Query_IF {
 
     @Override
     public ArrayList<content> search(Connection con, String name, String genre, String title) throws Exception {
+        MongoCollection<Document> collection = Controller.db.getCollection("content");
+        collection.find(or(eq("name", name), eq("genre", genre), eq("title", title)));
         return null;
     }
 
