@@ -4,6 +4,7 @@ import Model.*;
 import Controller.*;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
+
 import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -17,13 +18,13 @@ public class NoSql implements SQL_Query_IF {
 
 
     @Override
-    public Boolean login( String username, String password) throws Exception {
+    public Boolean login(String username, String password) throws Exception {
 
         return null;
     }
 
     @Override
-    public void insert( content content) throws Exception {
+    public void insert(content content) throws Exception {
 
         MongoCollection<Document> coll = Controller.db.getCollection("Movie");
         Document document = new Document("Title", content.getTitle());
@@ -42,8 +43,8 @@ public class NoSql implements SQL_Query_IF {
     }
 
     @Override
-    public void insertIntoRating( content content) throws Exception {
-
+    public void insertIntoRating(content content) throws Exception {
+        MongoCollection<Document> coll = Controller.db.getCollection("Movie");
     }
 
     @Override
@@ -52,14 +53,14 @@ public class NoSql implements SQL_Query_IF {
     }
 
     @Override
-    public ArrayList<content> search( String name, String genre, String title) throws Exception {
+    public ArrayList<content> search(String name, String genre, String title) throws Exception {
         MongoCollection<Document> coll = Controller.db.getCollection("Movie");
         coll.find(or(eq("name", name), eq("genre"), eq("title", title)));
         return null;
     }
 
     @Override
-    public ArrayList<content> searchRating( String rating) throws Exception {
+    public ArrayList<content> searchRating(String rating) throws Exception {
         return null;
     }
 }

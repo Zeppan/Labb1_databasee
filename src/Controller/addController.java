@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import sample.SQL_Query;
+import sample.*;
 
 import java.util.ArrayList;
 
@@ -93,6 +93,7 @@ public class addController {
     public void getInformation() {
         //This function will get the information from the media
         SQL_Query sql = new SQL_Query();
+        NoSql noSql = new NoSql();
 
         ArrayList<Creator> creatorTmp = new ArrayList<>();
         for (int i = 0; i < creators.size(); i++) {
@@ -120,7 +121,7 @@ public class addController {
                 public void run() {
                     //Statement function here!
                     try {
-                        sql.insert(Controller.con, contentTmp);
+                        noSql.insert( contentTmp);
                         success = true;
                     } catch (Exception e) {
                         error = e;

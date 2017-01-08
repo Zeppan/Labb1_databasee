@@ -45,7 +45,7 @@ public class searchByController {
                 public void run() {
                     //Statement function here!
                     try {
-                        table = sql.search(Controller.con, searchName, searchGenre, searchTitle);
+                        table = sql.search( searchName, searchGenre, searchTitle);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -103,7 +103,7 @@ public class searchByController {
                 public void run() {
                     //Statement function here!
                     try {
-                        table = sql.searchRating(Controller.con, ratings);
+                        table = sql.searchRating( ratings);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }

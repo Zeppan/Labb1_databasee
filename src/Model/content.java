@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by nicla on 2016-11-30.
  */
 public class content {
-    private int contentID;
+    private String contentID;
     private rating rating;
     private String title;
     private String releaseDate;
@@ -25,7 +25,7 @@ public class content {
      * @param type
      * @param rating
      */
-    public content(int contentID, String title, String releaseDate, String type, rating rating) {
+    public content(String contentID, String title, String releaseDate, String type, rating rating) {
         creators = new ArrayList<>();
         genres = new ArrayList<>();
         reviews = new ArrayList<>();
@@ -80,7 +80,7 @@ public class content {
         return addedBy;
     }
 
-    public int getContentID() {
+    public String getContentID() {
         return contentID;
     }
 
@@ -139,7 +139,7 @@ public class content {
         this.addedBy = addedBy;
     }
 
-    public void SetContentID(int contentID) {
+    public void SetContentID(String contentID) {
         this.contentID = contentID;
     }
 

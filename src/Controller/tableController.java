@@ -110,7 +110,7 @@ public class tableController {
                 public void run() {
                     //Statement function here!
                     try {
-                        sql.insertIntoReviews(Controller.con, addingReview);
+                        sql.insertIntoReviews(addingReview);
                         success = true;
                     } catch (Exception e) {
                         error = e;
@@ -153,7 +153,7 @@ public class tableController {
                 public void run() {
                     //Statement function here!
                     try {
-                        sql.insertIntoRating(Controller.con, content);
+                        sql.insertIntoRating( content);
                         success = true;
                     } catch (Exception e) {
                         error = e;

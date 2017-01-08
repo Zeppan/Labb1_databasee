@@ -29,10 +29,6 @@ public class Controller {
        try {
            MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
            db = mongoClient.getDatabase("flomm");
-
-
-
-
            System.out.println("worked");
            return true;
        }finally{

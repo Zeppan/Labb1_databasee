@@ -83,7 +83,7 @@ public class SQL_Query implements SQL_Query_IF {
             pstmt = Controller.con.prepareStatement("INSERT INTO review(userName,contentID,review) VALUES(?,?,?)");
             pstmt.setString(1, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
 
-            pstmt.setInt(2, content.getContentID());
+            pstmt.setString(2, content.getContentID());
             pstmt.setString(3, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getReview());
             pstmt.executeUpdate();
         } catch (Exception e) {
@@ -106,7 +106,7 @@ public class SQL_Query implements SQL_Query_IF {
         try {
             pstmt = Controller.con.prepareStatement("INSERT INTO rating(username,contentID,rating) VALUES(?,?,?)");
             pstmt.setString(1, content.getObjectRating().getAddedBy());
-            pstmt.setInt(2, content.getContentID());
+            pstmt.setString(2, content.getContentID());
             pstmt.setString(3, content.getRating());
             pstmt.executeUpdate();
         } catch (Exception e) {
@@ -135,7 +135,7 @@ public class SQL_Query implements SQL_Query_IF {
             ResultSet rs = pstmt.getGeneratedKeys();
             try {
                 if (rs.next()) {
-                    content.SetContentID(rs.getInt(1));
+                    content.SetContentID(rs.getString(1));
                 }
             } finally {
                 if (rs != null) rs.close();
@@ -196,7 +196,7 @@ public class SQL_Query implements SQL_Query_IF {
         try {
             pstmt = con.prepareStatement("INSERT INTO CreatedContent VALUES(?,?)");
             for (Creator creator : content.getCreators()) {
-                pstmt.setInt(1, content.getContentID());
+                pstmt.setString(1, content.getContentID());
                 pstmt.setInt(2, creator.getCreatorID());
                 pstmt.executeUpdate();
             }
@@ -219,7 +219,7 @@ public class SQL_Query implements SQL_Query_IF {
         try {
             pstmt = con.prepareStatement("INSERT INTO contentGenre VALUES(?,?,?)");
             for (genre genre : content.getGenres()) {
-                pstmt.setInt(1, content.getContentID());
+                pstmt.setString(1, content.getContentID());
                 pstmt.setString(2, genre.getGenre());
                 pstmt.setString(3, genre.getAddedBy());
                 pstmt.executeUpdate();
@@ -294,7 +294,7 @@ public class SQL_Query implements SQL_Query_IF {
             try {
                 while (rs.next()) {
                     content tmp = new content();
-                    tmp.SetContentID(rs.getInt("contentID"));
+                    tmp.SetContentID(rs.getString("contentID"));
                     tmp.SetTitle(rs.getString("title"));
                     tmp.SetReleaseDate(rs.getString("releaseDate"));
                     tmp.SetType(rs.getString("type"));
@@ -342,7 +342,7 @@ public class SQL_Query implements SQL_Query_IF {
             try {
                 while (rs.next()) {
                     content tmp = new content();
-                    tmp.SetContentID(rs.getInt("contentID"));
+                    tmp.SetContentID(rs.getString("contentID"));
                     tmp.SetTitle(rs.getString("title"));
                     tmp.SetReleaseDate(rs.getString("releaseDate"));
                     tmp.SetType(rs.getString("type"));
