@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 
 /**
- * Created by nicla on 2016-12-07.
+ * Created by Niclas on 2016-12-07.
  */
 public class searchByController {
 
