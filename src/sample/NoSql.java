@@ -5,7 +5,10 @@ import Controller.*;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.or;
@@ -30,13 +33,17 @@ public class NoSql implements SQL_Query_IF {
         Document document = new Document("Title", content.getTitle());
         document.append("type", content.getType());
         document.append("release_date", content.getReleaseDate());
-        for (Creator creator : content.getCreators()) {
-            document.append("creator", new Document("Name", creator.getCreatorName())
-                    .append("Nationality", creator.getNationality())
-                    .append("Role", creator.getRole())
-                    .append("addedBy", creator.getAddedBy()));
+        List<Document> creators = new ArrayList<>();
+        for (Creator creator: content.getCreators()) {
+            creators.add(new Document("Name",creator.getCreatorName())
+                    .append("Nationality",creator.getNationality())
+                    .append("Role",creator.getRole())
+                    .append("addedBy",creator.getAddedBy()));
+            System.out.println("försök");
         }
+        document.append("Creators",creators);
         document.append("addedby", content.getAddedBy());
+        document.append("Reviews", Arrays.asList());
         coll.insertOne(document);
 
 
