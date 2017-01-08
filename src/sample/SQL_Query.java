@@ -2,7 +2,7 @@ package sample;
 
 import java.sql.*;
 import java.util.ArrayList;
-
+import Controller.*;
 import Model.*;
 
 
@@ -13,19 +13,18 @@ public class SQL_Query implements SQL_Query_IF {
     /**
      * Logs in a specific user, that user has to exist in the database in beforehand
      *
-     * @param con      Connection
      * @param username String
      * @param password String
      * @return
      * @throws Exception
      */
     @Override
-    public Boolean login(Connection con, String username, String password) throws Exception {
+    public Boolean login( String username, String password) throws Exception {
 
         PreparedStatement pstmt = null;
         try {
 
-            pstmt = con.prepareStatement("SELECT COUNT(*) FROM user WHERE userName_email = ? AND password = Password(?)");
+            pstmt = Controller.con.prepareStatement("SELECT COUNT(*) FROM user WHERE userName_email = ? AND password = Password(?)");
             pstmt.setString(1, username);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
@@ -50,40 +49,38 @@ public class SQL_Query implements SQL_Query_IF {
     /**
      * A transaction that inserts a new content with creators and genre.
      *
-     * @param con     Connection
      * @param content
      * @throws Exception
      */
     @Override
-    public void insert(Connection con, content content) throws Exception {
-        con.setAutoCommit(false);
+    public void insert(content content) throws Exception {
+        Controller.con.setAutoCommit(false);
         try {
-            insertIntoContent(con, content);
-            insertIntoCreator(con, content);
-            insertIntoCreatedContent(con, content);
-            insertIntoContentGenre(con, content);
-            con.commit();
+            insertIntoContent(Controller.con, content);
+            insertIntoCreator(Controller.con, content);
+            insertIntoCreatedContent(Controller.con, content);
+            insertIntoContentGenre(Controller.con, content);
+            Controller.con.commit();
         } catch (Exception e) {
-            con.rollback();
+            Controller.con.rollback();
             e.getMessage();
             throw e;
         } finally {
-            con.setAutoCommit(true);
+            Controller.con.setAutoCommit(true);
         }
     }
 
     /**
      * Inserts a newly made review to the database
      *
-     * @param con
      * @param content
      * @throws Exception
      */
     @Override
-    public void insertIntoReviews(Connection con, content content) throws Exception {
+    public void insertIntoReviews(content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("INSERT INTO review(userName,contentID,review) VALUES(?,?,?)");
+            pstmt = Controller.con.prepareStatement("INSERT INTO review(userName,contentID,review) VALUES(?,?,?)");
             pstmt.setString(1, content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy());
 
             pstmt.setInt(2, content.getContentID());
@@ -100,15 +97,14 @@ public class SQL_Query implements SQL_Query_IF {
     /**
      * Insert a newly created raiting to the database
      *
-     * @param con
      * @param content
      * @throws Exception
      */
     @Override
-    public void insertIntoRating(Connection con, content content) throws Exception {
+    public void insertIntoRating(content content) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            pstmt = con.prepareStatement("INSERT INTO rating(username,contentID,rating) VALUES(?,?,?)");
+            pstmt = Controller.con.prepareStatement("INSERT INTO rating(username,contentID,rating) VALUES(?,?,?)");
             pstmt.setString(1, content.getObjectRating().getAddedBy());
             pstmt.setInt(2, content.getContentID());
             pstmt.setString(3, content.getRating());
@@ -124,7 +120,6 @@ public class SQL_Query implements SQL_Query_IF {
     /**
      * A private method used in the insert, this specific part insert the newly made content into the database
      *
-     * @param con
      * @param content
      * @throws Exception
      */
@@ -277,7 +272,7 @@ public class SQL_Query implements SQL_Query_IF {
     /**
      * search after titel, name and genre. all possible matches are placed into an arraylist and then returned.
      *
-     * @param con
+
      * @param name
      * @param genre
      * @param title
@@ -285,13 +280,13 @@ public class SQL_Query implements SQL_Query_IF {
      * @throws Exception
      */
     @Override
-    public ArrayList<content> search(Connection con, String name, String genre, String title) throws Exception {
+    public ArrayList<content> search( String name, String genre, String title) throws Exception {
         ArrayList<content> tmparr = new ArrayList<>();
-        con.setAutoCommit(false);
+        Controller.con.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
 
-            pstmt = con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate,content.type,content.addedBy FROM content, contentGenre,creator,CreatedContent WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID AND creator.creatorID =createdcontent.creatorID AND creator.name LIKE ? AND contentgenre.genre LIKE ? AND content.title LIKE ?");
+            pstmt = Controller.con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate,content.type,content.addedBy FROM content, contentGenre,creator,CreatedContent WHERE content.contentID = CreatedContent.contentID AND content.contentID = contentGenre.contentID AND creator.creatorID =createdcontent.creatorID AND creator.name LIKE ? AND contentgenre.genre LIKE ? AND content.title LIKE ?");
             pstmt.setString(1, "%" + name + "%");
             pstmt.setString(2, "%" + genre + "%");
             pstmt.setString(3, "%" + title + "%");
@@ -304,23 +299,23 @@ public class SQL_Query implements SQL_Query_IF {
                     tmp.SetReleaseDate(rs.getString("releaseDate"));
                     tmp.SetType(rs.getString("type"));
                     tmp.SetaddedBy(rs.getString("addedBy"));
-                    tmp.SetAvarageRatingScore(avgRating(con, rs.getInt("contentID")));
-                    tmp.Setgenres(getGenres(con, rs.getInt("contentID")));
-                    tmp.SetCreators(getCreators(con, rs.getInt("contentID")));
-                    tmp.SetReviews(getReviews(con, rs.getInt("contentID")));
+                    tmp.SetAvarageRatingScore(avgRating(Controller.con, rs.getInt("contentID")));
+                    tmp.Setgenres(getGenres(Controller.con, rs.getInt("contentID")));
+                    tmp.SetCreators(getCreators(Controller.con, rs.getInt("contentID")));
+                    tmp.SetReviews(getReviews(Controller.con, rs.getInt("contentID")));
                     tmparr.add(tmp);
-                    con.commit();
+                    Controller.con.commit();
                 }
             } finally {
                 if (rs != null) rs.close();
             }
 
         } catch (Exception e) {
-            con.rollback();
+            Controller.con.rollback();
             e.getMessage();
             throw e;
         } finally {
-            con.setAutoCommit(true);
+            Controller.con.setAutoCommit(true);
             if (pstmt != null) pstmt.close();
         }
         return tmparr;
@@ -329,19 +324,18 @@ public class SQL_Query implements SQL_Query_IF {
     /**
      * Search after a rating all the matches are stored in one arraylist and then returned
      *
-     * @param con
      * @param rating
      * @return
      * @throws Exception
      */
     @Override
-    public ArrayList<content> searchRating(Connection con, String rating) throws Exception {
+    public ArrayList<content> searchRating(String rating) throws Exception {
         ArrayList<content> tmparr = new ArrayList<>();
-        con.setAutoCommit(false);
+        Controller.con.setAutoCommit(false);
         PreparedStatement pstmt = null;
         try {
 
-            pstmt = con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate, content.type, content.addedBy, AVG(rating.rating) AS rating FROM content,rating WHERE content.contentID = rating.contentID GROUP BY content.contentID HAVING AVG(rating.rating) LIKE ?");
+            pstmt = Controller.con.prepareStatement("SELECT DISTINCT content.contentID, title, content.releaseDate, content.type, content.addedBy, AVG(rating.rating) AS rating FROM content,rating WHERE content.contentID = rating.contentID GROUP BY content.contentID HAVING AVG(rating.rating) LIKE ?");
             pstmt.setString(1, rating + "%");
 
             ResultSet rs = pstmt.executeQuery();
@@ -353,10 +347,10 @@ public class SQL_Query implements SQL_Query_IF {
                     tmp.SetReleaseDate(rs.getString("releaseDate"));
                     tmp.SetType(rs.getString("type"));
                     tmp.SetaddedBy(rs.getString("addedBy"));
-                    tmp.SetAvarageRatingScore(avgRating(con, rs.getInt("contentID")));
-                    tmp.Setgenres(getGenres(con, rs.getInt("contentID")));
-                    tmp.SetCreators(getCreators(con, rs.getInt("contentID")));
-                    tmp.SetReviews(getReviews(con, rs.getInt("contentID")));
+                    tmp.SetAvarageRatingScore(avgRating(Controller.con, rs.getInt("contentID")));
+                    tmp.Setgenres(getGenres(Controller.con, rs.getInt("contentID")));
+                    tmp.SetCreators(getCreators(Controller.con, rs.getInt("contentID")));
+                    tmp.SetReviews(getReviews(Controller.con, rs.getInt("contentID")));
                     tmparr.add(tmp);
                 }
             } finally {
@@ -364,11 +358,11 @@ public class SQL_Query implements SQL_Query_IF {
             }
 
         } catch (Exception e) {
-            con.rollback();
+            Controller.con.rollback();
             e.getMessage();
             throw e;
         } finally {
-            con.setAutoCommit(true);
+            Controller.con.setAutoCommit(true);
             if (pstmt != null) pstmt.close();
         }
         return tmparr;
