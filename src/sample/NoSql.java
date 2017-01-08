@@ -2,8 +2,8 @@ package sample;
 
 import Model.content;
 import Controller.*;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
+import com.mongodb.*;
+//import com.mongodb.DBCollection;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -23,10 +23,12 @@ public class NoSql implements SQL_Query_IF{
     @Override
     public void insert(Connection con, content content) throws Exception {
 
-        DBCollection coll = Controller.db.getCollection("User");
-        BasicDBObject obj = new BasicDBObject();
+        DBCollection coll = Controller.db.getCollection("movie");
+        Document obj = new Document("name", "anders")
         obj.append("title",content.getTitle());
         obj.append("type",content.getType());
+        obj.append("release_date",content.getReleaseDate());
+        obj.append("creator", new Document("",""));
         obj.append("addedby",content.getAddedBy());
 
         coll.insert(obj);
