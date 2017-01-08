@@ -28,7 +28,7 @@ public class NoSql implements SQL_Query_IF{
         obj.append("title",content.getTitle());
         obj.append("type",content.getType());
         obj.append("addedby",content.getAddedBy());
-        
+
         coll.insert(obj);
 
 
