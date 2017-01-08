@@ -1,6 +1,6 @@
 package sample;
 
-import Model.content;
+import Model.*;
 import Controller.*;
 import com.mongodb.*;
 import org.bson.Document;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by Glantz on 2017-01-08.
  */
-public class NoSql implements SQL_Query_IF{
+public class NoSql implements SQL_Query_IF {
 
 
     @Override
@@ -25,17 +25,20 @@ public class NoSql implements SQL_Query_IF{
     public void insert(Connection con, content content) throws Exception {
 
         DBCollection coll = Controller.db.getCollection("movie");
-        Document obj = new Document("name", "anders")
-        obj.append("title",content.getTitle());
-        obj.append("type",content.getType());
-        obj.append("release_date",content.getReleaseDate());
-        obj.append("creator", new Document("",""));
-        obj.append("addedby",content.getAddedBy());
+        Document document = new Document("Title", content.getTitle())
+                .append("type", content.getType())
+                .append("release_date", content.getReleaseDate());
+        for (Creator creator : content.getCreators()) {
+            document.append("creator", new Document("Name", creator.getCreatorName())
+                    .append("Nationality", creator.getNationality())
+                    .append("Role", creator.getRole())
+                    .append("addedBy", creator.getAddedBy()));
+        }
+        document.append("addedby", content.getAddedBy());
+        coll.insertOne(document);
 
-        coll.insert(obj);
 
-
-}
+    }
 
     @Override
     public void insertIntoRating(Connection con, content content) throws Exception {
