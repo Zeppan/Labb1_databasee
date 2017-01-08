@@ -12,9 +12,10 @@ import Model.*;
 public class SQL_Query implements SQL_Query_IF {
     /**
      * Logs in a specific user, that user has to exist in the database in beforehand
-     * @param con Connection
+     *
+     * @param con      Connection
      * @param username String
-     * @param password  String
+     * @param password String
      * @return
      * @throws Exception
      */
@@ -48,7 +49,8 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * A transaction that inserts a new content with creators and genre.
-     * @param con Connection
+     *
+     * @param con     Connection
      * @param content
      * @throws Exception
      */
@@ -72,6 +74,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * Inserts a newly made review to the database
+     *
      * @param con
      * @param content
      * @throws Exception
@@ -96,6 +99,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * Insert a newly created raiting to the database
+     *
      * @param con
      * @param content
      * @throws Exception
@@ -119,6 +123,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * A private method used in the insert, this specific part insert the newly made content into the database
+     *
      * @param con
      * @param content
      * @throws Exception
@@ -148,6 +153,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * A private method used in the insert, this specific method inserts a newly made creator. If the creator already exist the creatorID is collected for further use
+     *
      * @param con
      * @param content
      * @throws Exception
@@ -156,24 +162,24 @@ public class SQL_Query implements SQL_Query_IF {
         PreparedStatement pstmt = null;
         try {
             for (Creator creator : content.getCreators()) {
-                if(checkcreator(con,creator)==0){
-                pstmt = con.prepareStatement("INSERT INTO creator(name,nationality,role,addedBy) VALUES(?,?,?,?)", pstmt.RETURN_GENERATED_KEYS);
-                pstmt.setString(1, creator.getCreatorName());
-                pstmt.setString(2, creator.getNationality());
-                pstmt.setString(3, creator.getRole());
-                pstmt.setString(4, creator.getAddedBy());
-                pstmt.executeUpdate();
-                ResultSet rs = pstmt.getGeneratedKeys();
-                try {
-                    if (rs.next()) {
-                        creator.setCreatorID(rs.getInt(1));
+                if (checkcreator(con, creator) == 0) {
+                    pstmt = con.prepareStatement("INSERT INTO creator(name,nationality,role,addedBy) VALUES(?,?,?,?)", pstmt.RETURN_GENERATED_KEYS);
+                    pstmt.setString(1, creator.getCreatorName());
+                    pstmt.setString(2, creator.getNationality());
+                    pstmt.setString(3, creator.getRole());
+                    pstmt.setString(4, creator.getAddedBy());
+                    pstmt.executeUpdate();
+                    ResultSet rs = pstmt.getGeneratedKeys();
+                    try {
+                        if (rs.next()) {
+                            creator.setCreatorID(rs.getInt(1));
+                        }
+                    } finally {
+                        if (rs != null) rs.close();
                     }
-                } finally {
-                    if (rs != null) rs.close();
-                }
-                pstmt.close();}
-                else{
-                    creator.setCreatorID(checkcreator(con,creator));
+                    pstmt.close();
+                } else {
+                    creator.setCreatorID(checkcreator(con, creator));
                 }
             }
 
@@ -185,6 +191,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * A private method used in insert, this specific method collects the contentID and the creatorID and adds them together in a single table
+     *
      * @param con
      * @param content
      * @throws Exception
@@ -207,6 +214,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * A private method used in insert, this specific method collect the contentID and pair it with the genre, then this is inserted into a specific table
+     *
      * @param con
      * @param content
      * @throws Exception
@@ -232,35 +240,43 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * Private method used bu insertcreator, this method checks if the creator already exist and if so returns its creatorID
+     *
      * @param con
      * @param creator
      * @return
      * @throws Exception
      */
-    private int checkcreator(Connection con,Creator creator)throws Exception{
+    private int checkcreator(Connection con, Creator creator) throws Exception {
         int tmpCreatorID = 0;
         PreparedStatement pstmt = null;
-        try{
+        try {
             pstmt = con.prepareStatement("SELECT creatorID FROM creator WHERE name = ? AND nationality = ? AND role = ?");
-            pstmt.setString(1,creator.getCreatorName());
-            pstmt.setString(2,creator.getNationality());
-            pstmt.setString(3,creator.getRole());
+            pstmt.setString(1, creator.getCreatorName());
+            pstmt.setString(2, creator.getNationality());
+            pstmt.setString(3, creator.getRole());
             ResultSet rs = pstmt.executeQuery();
-            try{
-                rs.next();
-                tmpCreatorID = rs.getInt("creatorID");
+            try {
+                if (rs.next()) {
+                    tmpCreatorID = rs.getInt(1);
+                }
 
-            }finally {
-                if(rs != null) rs.close();
+            } finally {
+                if (rs != null) rs.close();
             }
-        }finally {
-            if(pstmt != null) pstmt.close();
+        } finally {
+            if (pstmt != null) pstmt.close();
         }
-        return tmpCreatorID;
+        if (tmpCreatorID != 0) {
+            return tmpCreatorID;
+        } else {
+            return 0;
+        }
+
     }
 
     /**
      * search after titel, name and genre. all possible matches are placed into an arraylist and then returned.
+     *
      * @param con
      * @param name
      * @param genre
@@ -312,6 +328,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * Search after a rating all the matches are stored in one arraylist and then returned
+     *
      * @param con
      * @param rating
      * @return
@@ -360,6 +377,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * private method that collects all the genres connected to a specific contentID and the returned in a arraylist
+     *
      * @param con
      * @param contentID
      * @return
@@ -388,6 +406,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * Private method that calculates the avg rating for a specific contentID and then returns it
+     *
      * @param con
      * @param contentID
      * @return
@@ -409,7 +428,7 @@ public class SQL_Query implements SQL_Query_IF {
         } finally {
             if (pstmt != null) pstmt.close();
         }
-        if (tmp !=null) {
+        if (tmp != null) {
             return tmp;
         } else {
             tmp = "no rating";
@@ -420,6 +439,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * Private method that gets all creators connected to a specific contentID and returned in a arraylist
+     *
      * @param con
      * @param contentID
      * @return
@@ -453,6 +473,7 @@ public class SQL_Query implements SQL_Query_IF {
 
     /**
      * Private method that gets all the reviews that are connected to a specific contentID
+     *
      * @param con
      * @param contentID
      * @return
