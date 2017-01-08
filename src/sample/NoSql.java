@@ -6,6 +6,9 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import java.util.ArrayList;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.or;
+
 
 /**
  * Created by Glantz on 2017-01-08.
@@ -50,6 +53,8 @@ public class NoSql implements SQL_Query_IF {
 
     @Override
     public ArrayList<content> search( String name, String genre, String title) throws Exception {
+        MongoCollection<Document> coll = Controller.db.getCollection("Movie");
+        coll.find(or(eq("name", name), eq("genre"), eq("title", title)));
         return null;
     }
 
