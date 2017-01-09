@@ -99,9 +99,15 @@ public class NoSql implements SQL_Query_IF {
         content tmp = new content();
         Creator tmpcreator = new Creator();
 
+        Document query = new Document();
+        query.append("Title",new Document("$regex", title));
+        query.append("Genres.Genre",new Document("$regex", genre));
+        query.append("Creators.Name", new Document("$regex", name));
+
+
 
         MongoCollection<Document> coll = Controller.db.getCollection("Movie");
-        List<Document> users = (List<Document>) coll.find().into(new ArrayList<Document>());
+        List<Document> users = (List<Document>) coll.find(query).into(new ArrayList<Document>());
 
         for (Document doc : users) {
             System.out.println(doc);
