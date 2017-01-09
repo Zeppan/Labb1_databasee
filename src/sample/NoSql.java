@@ -34,14 +34,13 @@ public class NoSql implements SQL_Query_IF {
         document.append("type", content.getType());
         document.append("release_date", content.getReleaseDate());
         List<Document> creators = new ArrayList<>();
-        for (Creator creator: content.getCreators()) {
-            creators.add(new Document("Name",creator.getCreatorName())
-                    .append("Nationality",creator.getNationality())
-                    .append("Role",creator.getRole())
-                    .append("addedBy",creator.getAddedBy()));
-            System.out.println("försök");
+        for (Creator creator : content.getCreators()) {
+            creators.add(new Document("Name", creator.getCreatorName())
+                    .append("Nationality", creator.getNationality())
+                    .append("Role", creator.getRole())
+                    .append("addedBy", creator.getAddedBy()));
         }
-        document.append("Creators",creators);
+        document.append("Creators", creators);
         document.append("addedby", content.getAddedBy());
         document.append("Reviews", Arrays.asList());
         coll.insertOne(document);
