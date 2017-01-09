@@ -5,6 +5,7 @@ import Controller.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import javax.print.Doc;
 import java.lang.reflect.Array;
@@ -75,19 +76,18 @@ public class NoSql implements SQL_Query_IF {
         Document review = new Document()
                 .append("Rating", new Document("rating", content.getRating())
                         .append("addedBy", content.getObjectRating().getAddedBy()));
-        coll.updateOne(eq("_id", content.getContentID()), Updates.addToSet("Rating", review));
+        coll.updateOne(eq("_id", new ObjectId(content.getContentID())), Updates.addToSet("Rating", review));
 
     }
 
     @Override
     public void insertIntoReviews(content content) throws Exception {
         MongoCollection<Document> coll = Controller.db.getCollection("Movie");
-
         Document review = new Document()
                 .append("Reviews", new Document("review", content.getReviewsArray().get(content.getReviewsArray().size() - 1).getReview())
                         .append("addedBy", content.getReviewsArray().get(content.getReviewsArray().size() - 1).getAddedBy()));
 
-        coll.updateOne(eq("_id", content.getContentID()), Updates.addToSet("Reviews", review));
+        coll.updateOne(eq("_id", new ObjectId(content.getContentID())), Updates.addToSet("Reviews", review));
 
     }
    // and(eq("title", title),
@@ -103,7 +103,7 @@ public class NoSql implements SQL_Query_IF {
         List<Document> users = (List<Document>) coll.find().into(new ArrayList<Document>());
         for(Document doc:users){
             System.out.println(doc);
-
+            tmp.SetContentID(doc.get("_id").toString());
             tmp.SetTitle(doc.getString("Title"));
             Document tmpdoc = (Document)doc.get("Genres");
             tmp.setGenre(tmpdoc.getString("Genre"),tmpdoc.getString("addedBy"));

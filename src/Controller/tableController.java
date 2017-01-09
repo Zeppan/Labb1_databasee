@@ -145,6 +145,7 @@ public class tableController {
         content.SetRatingScore(rate, Controller.usernameLoggedIn);
 
         SQL_Query sql = new SQL_Query();
+        NoSql noSql = new NoSql();
 
 
         try {
@@ -155,7 +156,7 @@ public class tableController {
                 public void run() {
                     //Statement function here!
                     try {
-                        sql.insertIntoRating( content);
+                        noSql.insertIntoRating( content);
                         success = true;
                     } catch (Exception e) {
                         error = e;
