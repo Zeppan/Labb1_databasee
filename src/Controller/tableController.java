@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import sample.NoSql;
 import sample.SQL_Query;
 
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ public class tableController {
         content addingReview = item.get(0);
         addingReview.addReview(reviewText, Controller.usernameLoggedIn);
         SQL_Query sql = new SQL_Query();
+        NoSql noSql = new NoSql();
 
         try {
             new Thread() {
@@ -110,7 +112,7 @@ public class tableController {
                 public void run() {
                     //Statement function here!
                     try {
-                        sql.insertIntoReviews(addingReview);
+                        noSql.insertIntoReviews(addingReview);
                         success = true;
                     } catch (Exception e) {
                         error = e;

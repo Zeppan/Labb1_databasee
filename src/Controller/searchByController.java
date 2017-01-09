@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.NoSql;
 import sample.SQL_Query;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class searchByController {
     @FXML
     public void searchBy(ActionEvent e) throws Exception {
         SQL_Query sql = new SQL_Query();
+        NoSql noSql = new NoSql();
 
         String searchName = name.getText(), searchGenre = genre.getText(), searchTitle = title.getText();
 
@@ -45,7 +47,7 @@ public class searchByController {
                 public void run() {
                     //Statement function here!
                     try {
-                        table = sql.search( searchName, searchGenre, searchTitle);
+                        table = noSql.search( searchName, searchGenre, searchTitle);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
