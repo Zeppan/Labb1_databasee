@@ -18,6 +18,7 @@ public class Controller {
     public static Connection con;
     public static String usernameLoggedIn;
     public static MongoDatabase db;
+    public static MongoClient mongoClient;
 
     /**
      * Connects to database
@@ -32,8 +33,10 @@ public class Controller {
 
 
         NoSql noSql = new NoSql();
+        usernameLoggedIn = username;
         try {
-            MongoClient mongoClient = new MongoClient("localhost", 27017);
+            mongoClient = new MongoClient("localhost", 27017);
+
             db = mongoClient.getDatabase("flomm");
             if (noSql.login(username, password)) {
                 return true;
@@ -75,6 +78,6 @@ public class Controller {
      */
     public static void closeConnection() throws Exception {
         con.close();
+        mongoClient.close();
     }
-
 }
