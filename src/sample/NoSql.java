@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.or;
+import static com.mongodb.client.model.Filters.and;
 
 
 /**
@@ -22,8 +23,13 @@ public class NoSql implements SQL_Query_IF {
 
     @Override
     public Boolean login(String username, String password) throws Exception {
-
-        return null;
+        MongoCollection<Document> coll = Controller.db.getCollection("User");
+        List<Document> users = (List<Document>) coll.find(and(eq("password", password),
+                eq("user_name", username))).into(new ArrayList<Document>());
+        if (users.size() == 1) {
+            return true;
+        } else
+            return false;
     }
 
     @Override
@@ -43,6 +49,7 @@ public class NoSql implements SQL_Query_IF {
         document.append("Creators", creators);
         document.append("addedby", content.getAddedBy());
         document.append("Reviews", Arrays.asList());
+        document.append("Rating", Arrays.asList());
         coll.insertOne(document);
 
 

@@ -5,16 +5,23 @@ import java.sql.*;
 
 
 import com.mongodb.*;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import sample.NoSql;
 import sample.SQL_Query;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class Controller {
 
     public static Connection con;
     public static String usernameLoggedIn;
     public static MongoDatabase db;
+
     /**
      * Connects to database
+     *
      * @param username
      * @param password
      * @param dbName
@@ -24,16 +31,19 @@ public class Controller {
     public static boolean connectToDatabase(String username, String password, String dbName) throws Exception {
 
 
-
-
-       try {
-           MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
-           db = mongoClient.getDatabase("flomm");
-           System.out.println("worked");
-           return true;
-       }finally{
-           System.out.println("Good try");
-       }
+        NoSql noSql = new NoSql();
+        try {
+            MongoClient mongoClient = new MongoClient("localhost", 27017);
+            db = mongoClient.getDatabase("flomm");
+            if (noSql.login(username, password)) {
+                return true;
+            } else {
+                System.out.println("failed to log in!");
+                return false;
+            }
+        } catch (Exception e) {
+            throw e;
+        }
         // SQL Launch
        /* SQL_Query sql = new SQL_Query();
         usernameLoggedIn = username;
@@ -60,6 +70,7 @@ public class Controller {
 
     /**
      * Closes connection to database
+     *
      * @throws Exception
      */
     public static void closeConnection() throws Exception {
