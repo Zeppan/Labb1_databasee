@@ -3,6 +3,7 @@ package sample;
 import Model.*;
 import Controller.*;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -102,7 +103,7 @@ public class NoSql implements SQL_Query_IF {
         ArrayList<content> contentarray = new ArrayList<>();
 
 
-        content tmp = new content();
+
 
 
         Document query = new Document();
@@ -110,22 +111,27 @@ public class NoSql implements SQL_Query_IF {
         query.append("Genres.Genre", new Document("$regex", genre));
         query.append("Creators.Name", new Document("$regex", name));
 
+        MongoCursor<Document> cursor ;
+        MongoCollection<Document> coll = Controller.db.getCollection("Movie");
+        cursor = coll.find(query).iterator();
         try {
-            MongoCollection<Document> coll = Controller.db.getCollection("Movie");
-            List<Document> users = (List<Document>) coll.find(query).into(new ArrayList<Document>());
-            for (Document doc : users) {
-                tmp.SetContentID(doc.get("_id").toString());
-                tmp.SetTitle(doc.getString("Title"));
-                Document tmpdoc = (Document) doc.get("Genres");
-                tmp.setGenre(tmpdoc.getString("Genre"), tmpdoc.getString("addedBy"));
-                tmp.SetType(doc.getString("Type"));
-                tmp.SetReleaseDate(doc.getString("release_date"));
-                tmp.SetCreators(getCreators((ArrayList<Document>) doc.get("Creators")));
-                tmp.SetaddedBy(doc.getString("addedby"));
-                tmp.SetReviews(getReviews((ArrayList<Document>) doc.get("Reviews")));
-                tmp.SetAvarageRatingScore(getAvgRating((ArrayList<Document>) doc.get("Rating")));
-                contentarray.add(tmp);
 
+            while(cursor.hasNext())
+            {
+                content tmp = new content();
+                Document document = cursor.next();
+                tmp.SetContentID(document.get("_id").toString());
+                tmp.SetTitle(document.getString("Title"));
+                Document tmpdoc = (Document) document.get("Genres");
+                tmp.setGenre(tmpdoc.getString("Genre"), tmpdoc.getString("addedBy"));
+                tmp.SetType(document.getString("Type"));
+                tmp.SetReleaseDate(document.getString("release_date"));
+                tmp.SetCreators(getCreators((ArrayList<Document>) document.get("Creators")));
+                tmp.SetaddedBy(document.getString("addedby"));
+                tmp.SetReviews(getReviews((ArrayList<Document>) document.get("Reviews")));
+                tmp.SetAvarageRatingScore(getAvgRating((ArrayList<Document>) document.get("Rating")));
+                System.out.println(tmp.getTitle());
+                contentarray.add(tmp);
             }
         } catch (Exception e) {
             e.getMessage();
@@ -139,23 +145,25 @@ public class NoSql implements SQL_Query_IF {
         ArrayList<content> contentarray = new ArrayList<>();
         ArrayList<content> contentAVG = new ArrayList<>();
         int searchrating;
-        content tmp = new content();
 
+        MongoCursor<Document> cursor ;
 
         try {
             MongoCollection<Document> coll = Controller.db.getCollection("Movie");
-            List<Document> users = (List<Document>) coll.find().into(new ArrayList<Document>());
-            for (Document doc : users) {
-                tmp.SetContentID(doc.get("_id").toString());
-                tmp.SetTitle(doc.getString("Title"));
-                Document tmpdoc = (Document) doc.get("Genres");
+            cursor = coll.find().iterator();
+            while(cursor.hasNext()) {
+                content tmp = new content();
+                Document document = cursor.next();
+                tmp.SetContentID(document.get("_id").toString());
+                tmp.SetTitle(document.getString("Title"));
+                Document tmpdoc = (Document) document.get("Genres");
                 tmp.setGenre(tmpdoc.getString("Genre"), tmpdoc.getString("addedBy"));
-                tmp.SetType(doc.getString("Type"));
-                tmp.SetReleaseDate(doc.getString("release_date"));
-                tmp.SetCreators(getCreators((ArrayList<Document>) doc.get("Creators")));
-                tmp.SetaddedBy(doc.getString("addedby"));
-                tmp.SetReviews(getReviews((ArrayList<Document>) doc.get("Reviews")));
-                tmp.SetAvarageRatingScore(getAvgRating((ArrayList<Document>) doc.get("Rating")));
+                tmp.SetType(document.getString("Type"));
+                tmp.SetReleaseDate(document.getString("release_date"));
+                tmp.SetCreators(getCreators((ArrayList<Document>) document.get("Creators")));
+                tmp.SetaddedBy(document.getString("addedby"));
+                tmp.SetReviews(getReviews((ArrayList<Document>) document.get("Reviews")));
+                tmp.SetAvarageRatingScore(getAvgRating((ArrayList<Document>) document.get("Rating")));
                 contentarray.add(tmp);
 
             }
@@ -165,11 +173,11 @@ public class NoSql implements SQL_Query_IF {
         }
 
         searchrating = Integer.parseInt(rating);
+
         for (content content : contentarray) {
-            System.out.println(content.getRating());
 
             int contentrating = (int) Double.parseDouble(content.getRating());
-            if (((searchrating >= contentrating) && (searchrating < (contentrating + 1))) || rating == null) ;
+            if (searchrating == contentrating)
             {
                 contentAVG.add(content);
             }
@@ -219,4 +227,6 @@ public class NoSql implements SQL_Query_IF {
             return "No rating";
         }
     }
+
+
 }
