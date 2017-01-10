@@ -95,6 +95,7 @@ public class searchByController {
     public void searchByRating(ActionEvent e) throws Exception {
 
         SQL_Query sql = new SQL_Query();
+        NoSql noSql= new NoSql();
         String ratings = rating.getText();
 
 
@@ -105,7 +106,7 @@ public class searchByController {
                 public void run() {
                     //Statement function here!
                     try {
-                        table = sql.searchRating( ratings);
+                        table = noSql.searchRating( ratings);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
